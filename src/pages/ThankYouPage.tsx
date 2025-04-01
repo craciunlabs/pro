@@ -8,18 +8,24 @@ import { faFacebookF } from '@fortawesome/free-brands-svg-icons';
 import styles from './ThankYouPage.module.css'; // Ensure this CSS module exists
 import metaEvents from '../utils/meta-event';
 import { CustomData } from '../utils/meta-event-types';
-import { useRouter } from 'next/router'; // Add this import for URL parameter access
 
 // Declare fbq for TypeScript
 declare global { interface Window { fbq?: (...args: any[]) => void; } }
+
+// Function to get URL parameters
+const getUrlParameter = (name: string): string | null => {
+  if (typeof window === 'undefined') return null;
+  
+  const searchParams = new URLSearchParams(window.location.search);
+  return searchParams.get(name);
+};
 
 // Function to get fbclid from URL or localStorage
 const getFbclid = (): string | null => {
   if (typeof window === 'undefined') return null;
   
   // Try to get from URL first
-  const urlParams = new URLSearchParams(window.location.search);
-  const fbclidFromUrl = urlParams.get('fbclid');
+  const fbclidFromUrl = getUrlParameter('fbclid');
   
   if (fbclidFromUrl) {
     // Store in localStorage for future use
@@ -78,7 +84,6 @@ const getFbp = (): string | null => {
 
 const ThankYouPage: React.FC = () => {
     const confirmationBoxRef = useRef<HTMLDivElement>(null);
-    const router = useRouter(); // Access router for URL parameters
 
     // --- Meta Pixel & CAPI Tracking ---
     useEffect(() => {
@@ -93,6 +98,9 @@ const ThankYouPage: React.FC = () => {
         
         // Event ID to prevent duplicates
         const eventID = `purchase_${Date.now()}`;
+
+        // Get any Calendly parameters if they were passed
+        const eventUuid = getUrlParameter('event_uuid');
 
         // --- 1. Client-Side Pixel Event with improved parameters ---
         if (window.fbq) {
@@ -123,13 +131,12 @@ const ThankYouPage: React.FC = () => {
             content_name: 'Progressive Mediumship Course'
         };
         
-        console.log('Sending server-side purchase event with userData:', userData);
-        
-        // Get any Calendly parameters if they were passed
-        const eventUuid = router.query.event_uuid as string;
+        // Add transaction ID if available from Calendly
         if (eventUuid) {
             customData.transaction_id = eventUuid;
         }
+        
+        console.log('Sending server-side purchase event with userData:', userData);
         
         metaEvents.purchase(customData, {
             eventID,
@@ -137,10 +144,13 @@ const ThankYouPage: React.FC = () => {
         });
         
         // Store that this conversion has been tracked to prevent duplicates
-        sessionStorage.setItem('purchase_tracked', 'true');
-    }, [router.isReady]); // Depend on router.isReady to ensure URL params are available
+        try {
+            sessionStorage.setItem('purchase_tracked', 'true');
+        } catch (e) {
+            console.warn('Unable to store in sessionStorage');
+        }
+    }, []); // Only run once on component mount
 
-    // --- Rest of your component remains the same ---
     // --- Confetti Effect ---
     useEffect(() => {
         const isMobile = () => window.innerWidth <= 768;
@@ -174,7 +184,7 @@ const ThankYouPage: React.FC = () => {
         return () => window.removeEventListener('resize', setVH);
     }, []);
 
-    // --- Render Component ---
+    // --- The rest of your component remains the same ---
     return (
         <div className={styles.container}>
             {/* Header - Profile Image Removed */}
@@ -190,7 +200,6 @@ const ThankYouPage: React.FC = () => {
                 {/* Confetti injected via useEffect */}
             </div>
 
-            {/* Rest of your component remains unchanged */}
             {/* Course Details Boxes */}
             <div className={styles.courseDetails}>
                 <div className={styles.detailBox}>
