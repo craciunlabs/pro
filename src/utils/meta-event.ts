@@ -1,38 +1,10 @@
 // src/utils/meta-event.ts
+import { CustomData, EventOptions, EventName } from './meta-event-types';
+export { CustomData, EventOptions, EventName }; // Re-export for convenience
 
 // Meta Pixel ID - uses the one set in your HTML
-const FB_PIXEL_ID = '529577443168923'; // Add export to fix TS6133 warning
-export { FB_PIXEL_ID }; // Export to prevent unused variable warning
-
-// Types for events
-export interface CustomData {
-  value?: number;
-  currency?: string;
-  content_name?: string;
-  content_category?: string;
-  content_ids?: string[];
-  contents?: Array<{id: string, quantity: number}>;
-  content_type?: string;
-  num_items?: number;
-  status?: string;
-  [key: string]: any;
-}
-
-export interface EventOptions {
-  eventID?: string;
-  [key: string]: any;
-}
-
-interface UserData {
-  external_id?: string;
-  client_user_agent?: string;
-  client_ip_address?: string;
-  em?: string; // hashed email
-  ph?: string; // hashed phone
-  fn?: string; // hashed first name
-  ln?: string; // hashed last name
-  [key: string]: any;
-}
+const FB_PIXEL_ID = '529577443168923'; 
+export { FB_PIXEL_ID };
 
 // Event cache to prevent duplicates
 const eventCache = new Set();
@@ -54,7 +26,7 @@ export const metaEvents = {
    * Send event to Meta Pixel
    */
   sendEvent: async (
-    eventName: string, 
+    eventName: EventName | string, 
     customData: CustomData = {}, 
     options: EventOptions = {}
   ) => {
@@ -74,11 +46,18 @@ export const metaEvents = {
         eventCache.delete(eventKey);
       }, 10000);
 
-      // Client-side uses browser's user agent
-      const userData: UserData = {
-        external_id: options.external_id || 'anonymous',
-        client_user_agent: navigator.userAgent
+      // Prepare user data from options
+      const userData: Record<string, any> = {
+        external_id: options.userData?.externalId || 'anonymous',
+        client_user_agent: navigator.userAgent,
       };
+      
+      // Add optional user data if present
+      if (options.userData?.clientIpAddress) userData.client_ip_address = options.userData.clientIpAddress;
+      if (options.userData?.email) userData.em = options.userData.email;
+      if (options.userData?.phone) userData.ph = options.userData.phone;
+      if (options.userData?.firstName) userData.fn = options.userData.firstName;
+      if (options.userData?.lastName) userData.ln = options.userData.lastName;
 
       // Track on client side too for redundancy
       if (typeof window !== 'undefined' && window.fbq) {
@@ -93,7 +72,7 @@ export const metaEvents = {
           data: [{
             event_name: eventName,
             event_time: Math.floor(Date.now() / 1000),
-            event_source_url: window.location.href,
+            event_source_url: options.eventSourceUrl || window.location.href,
             action_source: 'website',
             user_data: userData,
             custom_data: customData,
@@ -104,7 +83,9 @@ export const metaEvents = {
       });
 
       const data = await response.json();
-      console.log(`Event sent: ${eventName}`, data);
+      if (options.debug) {
+        console.log(`Event sent: ${eventName}`, data);
+      }
       return { success: true, data };
     } catch (error) {
       console.error(`Failed to send event: ${eventName}`, error);
@@ -113,26 +94,41 @@ export const metaEvents = {
   },
 
   // Helper methods for common events
-  pageView: (options = {}) => metaEvents.sendEvent('PageView', {}, options),
+  pageView: (options: EventOptions = {}) => 
+    metaEvents.sendEvent('PageView', {}, options),
   
-  // Fix the signature to match how it's being called in components
-  purchase: (valueOrData: number | CustomData, currency = 'EUR', options = {}) => {
-    // Handle both forms: purchase(number) and purchase(customData)
+  initiateCheckout: (valueOrData: number | CustomData, currencyOrOptions?: string | EventOptions, optionsParam?: EventOptions) => {
+    // Normalize parameters to handle different call signatures
+    let customData: CustomData;
+    let options: EventOptions = {};
+    
     if (typeof valueOrData === 'number') {
-      return metaEvents.sendEvent('Purchase', { value: valueOrData, currency }, options);
+      const currency = typeof currencyOrOptions === 'string' ? currencyOrOptions : 'EUR';
+      customData = { value: valueOrData, currency };
+      options = optionsParam || {};
     } else {
-      return metaEvents.sendEvent('Purchase', valueOrData, options);
+      customData = valueOrData;
+      options = (typeof currencyOrOptions === 'object' ? currencyOrOptions : {}) as EventOptions;
     }
+    
+    return metaEvents.sendEvent('InitiateCheckout', customData, options);
   },
   
-  // Fix the signature to match how it's being called in components
-  initiateCheckout: (valueOrData: number | CustomData, currency = 'EUR', options = {}) => {
-    // Handle both forms: initiateCheckout(number) and initiateCheckout(customData)
+  purchase: (valueOrData: number | CustomData, currencyOrOptions?: string | EventOptions, optionsParam?: EventOptions) => {
+    // Normalize parameters to handle different call signatures
+    let customData: CustomData;
+    let options: EventOptions = {};
+    
     if (typeof valueOrData === 'number') {
-      return metaEvents.sendEvent('InitiateCheckout', { value: valueOrData, currency }, options);
+      const currency = typeof currencyOrOptions === 'string' ? currencyOrOptions : 'EUR';
+      customData = { value: valueOrData, currency };
+      options = optionsParam || {};
     } else {
-      return metaEvents.sendEvent('InitiateCheckout', valueOrData, options);
+      customData = valueOrData;
+      options = (typeof currencyOrOptions === 'object' ? currencyOrOptions : {}) as EventOptions;
     }
+    
+    return metaEvents.sendEvent('Purchase', customData, options);
   },
 };
 

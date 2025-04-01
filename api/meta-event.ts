@@ -1,6 +1,7 @@
 // /api/meta-event.ts
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { LRUCache } from 'lru-cache'; // You may need to install this package
+import { LRUCache } from 'lru-cache';
+import { CustomData } from '../src/utils/meta-event-types';
 
 // Simple in-memory cache with a max of 100 items that expire after 10 seconds
 const eventCache = new LRUCache({
@@ -13,6 +14,16 @@ const PIXEL_ID = process.env.META_PIXEL_ID || '529577443168923';
 const FB_ACCESS_TOKEN = process.env.META_ACCESS_TOKEN || '';
 const API_VERSION = 'v18.0';
 const DOMAIN = process.env.META_DOMAIN || 'progressivemediumship.com';
+
+interface EventData {
+  event_name: string;
+  event_time: number;
+  event_source_url: string;
+  action_source: string;
+  user_data: Record<string, any>;
+  custom_data: CustomData;
+  event_id?: string;
+}
 
 export default async function handler(
   req: NextApiRequest,
@@ -32,7 +43,7 @@ export default async function handler(
     const processedEvents = [];
     
     // Process each event
-    for (const event of body.data) {
+    for (const event of body.data as EventData[]) {
       // Create a cache key based on event name, time window, and some user identifier
       const eventKey = `${event.event_name}_${Math.floor(event.event_time / 10)}_${
         event.user_data?.external_id || 'unknown'
@@ -86,7 +97,7 @@ export default async function handler(
     const requestBody = {
       data: processedEvents,
       access_token: FB_ACCESS_TOKEN,
-      test_event_code: body.test_event_code || 'TEST49303' // Remove in production
+      test_event_code: body.test_event_code || 'TEST49303' // Remove this in production
     };
 
     // Send to Meta

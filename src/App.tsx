@@ -1,7 +1,7 @@
 // src/App.tsx
 
 // --- Import React Hooks and Router ---
-import { useState, useEffect } from 'react'; // Removed unused 'React'
+import { useState, useEffect } from 'react';
 import { Routes, Route, useLocation } from 'react-router-dom';
 
 // --- Import Layout and UI Components ---
