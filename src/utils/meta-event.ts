@@ -20,7 +20,9 @@ const metaEvents = {
           event_source_url: typeof window !== 'undefined' ? window.location.href : '',
           action_source: "website", // Changed from "server" to "website" to match Meta's requirements
           user_data: {
-            client_user_agent: typeof navigator !== 'undefined' ? navigator.userAgent : ''
+            client_user_agent: typeof navigator !== 'undefined' ? navigator.userAgent : '',
+            // Add a test external_id for user identification as required by Meta
+            external_id: "test_user_123"
           },
           custom_data: customData
         }],

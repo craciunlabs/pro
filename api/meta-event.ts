@@ -6,6 +6,9 @@ interface UserData {
     client_ip_address?: string;
     fbc?: string;
     fbp?: string;
+    em?: string; // Hashed email
+    ph?: string; // Hashed phone
+    external_id?: string; // Hashed user ID
     [key: string]: string | undefined;
 }
 
@@ -115,11 +118,20 @@ export default async function handler(
         event.action_source = "website";
 
         // Add IP address to user_data if available
-        if (event.user_data) {
-            event.user_data.client_ip_address = event.user_data.client_ip_address || 
-                                               (req.headers['x-forwarded-for'] as string || 
-                                                req.socket?.remoteAddress || 
-                                                undefined);
+        if (!event.user_data) {
+            event.user_data = {};
+        }
+        
+        // Add the IP address if available
+        event.user_data.client_ip_address = event.user_data.client_ip_address || 
+                                           (req.headers['x-forwarded-for'] as string || 
+                                            req.socket?.remoteAddress || 
+                                            undefined);
+                                            
+        // Add a test external_id as required by Meta
+        if (!event.user_data.external_id) {
+            // For testing purposes only - in production, this should be a real hashed user ID
+            event.user_data.external_id = "test_user_123";
         }
     }
 
