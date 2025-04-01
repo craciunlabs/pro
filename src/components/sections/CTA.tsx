@@ -2,7 +2,7 @@
 import React from 'react';
 import styles from './CTA.module.css';
 import { useInView } from 'react-intersection-observer';
-import metaEvents from '../../utils/metaEvents'; // Import the metaEvents utility
+import metaEvents from '../../utils/meta-event'; // Import the metaEvents utility
 
 const CTA: React.FC = () => {
     const { ref: contentRef, inView: contentInView } = useInView({ triggerOnce: true, threshold: 0.1 });

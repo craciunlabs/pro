@@ -4,7 +4,7 @@ import styles from './Pricing.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faExclamationCircle } from '@fortawesome/free-solid-svg-icons';
 import { useInView } from 'react-intersection-observer';
-import metaEvents from '../../utils/metaEvents'; // Import the metaEvents utility
+import metaEvents from '../../utils/meta-event'; // Import the metaEvents utility
 
 declare global { interface Window { fbq?: (...args: any[]) => void; } }
 

@@ -1,12 +1,7 @@
 // src/pages/ThankYouPage.tsx
 import React, { useEffect, useRef } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-    faCalendarAlt, faClock, faUsers, faGift, faVideo, faCalendarCheck, faPlayCircle, faEnvelope
-} from '@fortawesome/free-solid-svg-icons';
-import { faFacebookF } from '@fortawesome/free-brands-svg-icons';
-import styles from './ThankYouPage.module.css'; // Ensure this CSS module exists
-import metaEvents from '../utils/metaEvents'; // Import the metaEvents utility
+import styles from './ThankYouPage.module.css';
+import metaEvents from '../utils/meta-event';
 
 // Declare fbq for TypeScript
 declare global { interface Window { fbq?: (...args: any[]) => void; } }

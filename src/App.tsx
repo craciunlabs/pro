@@ -16,7 +16,7 @@ import LandingPage from './pages/LandingPage';
 import ThankYouPage from './pages/ThankYouPage';
 
 // --- Import Meta Events Utility ---
-import metaEvents from './utils/metaEvents';
+import metaEvents from './utils/meta-event';
 
 // Declare fbq global function for TypeScript
 declare global { interface Window { fbq?: (...args: any[]) => void; } }
