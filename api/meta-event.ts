@@ -119,13 +119,11 @@ export default async function handler(
 
     const url = `https://graph.facebook.com/${apiVersion}/${pixelId}/events?access_token=${accessToken}`;
 
-    // Send to Meta API
+    // Send to Meta API using built-in fetch instead of node-fetch
     try {
         console.log('API Function: Sending CAPI Event:', JSON.stringify(payload, null, 2));
         
-        // FIXED node-fetch import
-        const { default: fetch } = await import('node-fetch');
-        
+        // Use the built-in fetch function
         const metaResponse = await fetch(url, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
