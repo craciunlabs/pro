@@ -1,22 +1,5 @@
 // src/utils/meta-event.ts
-
-export interface UserData {
-  fbp?: string | null;
-  fbc?: string | null;
-}
-
-export interface CustomData {
-  value: number;
-  currency: string;
-  content_ids?: string[];
-  content_name?: string;
-  [key: string]: any; // This allows arbitrary properties
-}
-
-export interface EventOptions {
-  url?: string;
-  eventId?: string;
-}
+import { UserData, CustomData, EventOptions } from './meta-event-types';
 
 const metaEvents = {
   /**
@@ -52,7 +35,7 @@ const metaEvents = {
           fbp: getFbp(),
           fbc: getFbc()
         },
-        customData: customData, // Just pass the whole customData object without spreading it again
+        customData: customData,
         eventId: options.eventId || `${eventName}_${Date.now()}`
       };
 
@@ -86,24 +69,24 @@ const metaEvents = {
     }
   },
 
-  // Convenience methods for common events
-  pageView: (customData = { value: 0, currency: 'EUR' }, options = {}) => {
+  // Convenience methods with explicit typing
+  pageView: (customData: CustomData = { value: 0, currency: 'EUR' }, options: EventOptions = {}) => {
     return metaEvents.sendEvent('PageView', customData, options);
   },
   
-  viewContent: (customData = { value: 0, currency: 'EUR' }, options = {}) => {
+  viewContent: (customData: CustomData = { value: 0, currency: 'EUR' }, options: EventOptions = {}) => {
     return metaEvents.sendEvent('ViewContent', customData, options);
   },
   
-  addToCart: (customData = { value: 0, currency: 'EUR' }, options = {}) => {
+  addToCart: (customData: CustomData = { value: 0, currency: 'EUR' }, options: EventOptions = {}) => {
     return metaEvents.sendEvent('AddToCart', customData, options);
   },
   
-  initiateCheckout: (customData = { value: 0, currency: 'EUR' }, options = {}) => {
+  initiateCheckout: (customData: CustomData = { value: 0, currency: 'EUR' }, options: EventOptions = {}) => {
     return metaEvents.sendEvent('InitiateCheckout', customData, options);
   },
   
-  purchase: (customData = { value: 0, currency: 'EUR' }, options = {}) => {
+  purchase: (customData: CustomData = { value: 0, currency: 'EUR' }, options: EventOptions = {}) => {
     return metaEvents.sendEvent('Purchase', customData, options);
   }
 };

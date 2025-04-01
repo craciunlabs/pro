@@ -2,6 +2,7 @@
 import React, { useEffect, useRef } from 'react';
 import styles from './ThankYouPage.module.css';
 import metaEvents from '../utils/meta-event';
+import { CustomData } from '../utils/meta-event-types';
 
 // Declare fbq for TypeScript
 declare global { interface Window { fbq?: (...args: any[]) => void; } }
@@ -23,12 +24,14 @@ const ThankYouPage: React.FC = () => {
         const purchaseValue = 1295;
         const currency = 'EUR';
         
-        metaEvents.purchase({
+        const customData: CustomData = {
             value: purchaseValue,
             currency: currency,
             content_ids: ['progressive-mediumship-course'],
             content_name: 'Progressive Mediumship Course'
-        });
+        };
+        
+        metaEvents.purchase(customData);
         
     }, []); // Run only once
 
