@@ -1,24 +1,33 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 
+// Updated interfaces to match the new data structure
 interface UserData {
+    client_user_agent?: string;
+    client_ip_address?: string;
     fbc?: string;
     fbp?: string;
+    [key: string]: string | undefined;
 }
 
 interface CustomData {
-    value: number;
-    currency: string;
-    [key: string]: string | number;
+    value?: number;
+    currency?: string;
+    [key: string]: any;
+}
+
+interface EventData {
+    event_name: string;
+    event_time: number;
+    event_source_url: string;
+    event_id?: string;
+    action_source?: string;
+    user_data?: UserData;
+    custom_data?: CustomData;
 }
 
 interface RequestBody {
-    eventName: string;
-    eventTime: number;
-    eventSourceUrl: string;
-    userData?: UserData;
-    customData: CustomData;
-    actionSource?: string;
-    eventId?: string;
+    data: EventData[];
+    test_event_code?: string;
 }
 
 interface MetaResponse {
@@ -36,12 +45,6 @@ interface MetaError {
         fbtrace_id: string;
     };
 }
-
-const hashData = async (data: string | null): Promise<string | null> => {
-    if (!data) return null;
-    const crypto = await import('crypto-js');
-    return crypto.SHA256(data.toLowerCase().trim()).toString(crypto.enc.Hex);
-};
 
 export default async function handler(
     req: VercelRequest,
@@ -70,8 +73,14 @@ export default async function handler(
 
     console.log("API Function: Received POST request.");
 
-    const body = req.body ?? {};
-    const { eventName, eventTime, eventSourceUrl, userData = {}, customData = {}, actionSource, eventId } = body as RequestBody;
+    // Parse the request body
+    const body = req.body as RequestBody;
+    
+    // Check if the request body is properly formatted
+    if (!body || !body.data || !Array.isArray(body.data) || body.data.length === 0) {
+        console.error('API Function ERROR: Invalid request format. Expected {data: [...]}', body);
+        return res.status(400).json({ message: 'Invalid request format. Expected {data: [...]}' });
+    }
 
     const pixelId = process.env.META_PIXEL_ID;
     const accessToken = process.env.META_ACCESS_TOKEN;
@@ -83,43 +92,32 @@ export default async function handler(
         return res.status(500).json({ message: 'Server configuration error.' });
     }
     
-    // FIXED VALIDATION: Use explicit check for undefined instead of truthy/falsy check
-    if (!eventName || !eventTime || !eventSourceUrl || customData?.value === undefined || !customData?.currency) {
-        console.error('API Function ERROR: Missing required event data fields.', { body });
-        return res.status(400).json({ message: 'Missing required event data fields.' });
-    }
+    // Process each event
+    for (const event of body.data) {
+        // Ensure required fields exist
+        if (!event.event_name || !event.event_time || !event.event_source_url) {
+            console.error('API Function ERROR: Missing required event data fields.', { event });
+            return res.status(400).json({ message: 'Missing required event data fields.' });
+        }
 
-    // Prepare User Data
-    const capiUserData: Record<string, string | undefined> = {
-        client_ip_address: req.headers['x-forwarded-for'] as string || req.socket?.remoteAddress || undefined,
-        client_user_agent: req.headers['user-agent'] as string || undefined,
-        fbc: userData.fbc || undefined,
-        fbp: userData.fbp || undefined,
-    };
-
-    for (const key of Object.keys(capiUserData)) {
-        if (capiUserData[key] === undefined) {
-            delete capiUserData[key];
+        // Add IP address to user_data if available
+        if (event.user_data) {
+            event.user_data.client_ip_address = event.user_data.client_ip_address || 
+                                               (req.headers['x-forwarded-for'] as string || 
+                                                req.socket?.remoteAddress || 
+                                                undefined);
         }
     }
 
-    // Construct Payload
+    // Construct Payload - use the incoming payload directly, just adding test_event_code
     const payload = {
-        data: [{
-            event_name: eventName,
-            event_time: eventTime,
-            action_source: actionSource || 'website',
-            event_source_url: eventSourceUrl,
-            event_id: eventId,
-            user_data: capiUserData,
-            custom_data: customData
-        }],
-        test_event_code: "TEST25707" // Keep test code
+        ...body,
+        test_event_code: body.test_event_code || "TEST49303" // Use the one in body or default
     };
 
     const url = `https://graph.facebook.com/${apiVersion}/${pixelId}/events?access_token=${accessToken}`;
 
-    // Send to Meta API using built-in fetch instead of node-fetch
+    // Send to Meta API using built-in fetch
     try {
         console.log('API Function: Sending CAPI Event:', JSON.stringify(payload, null, 2));
         

@@ -1,5 +1,4 @@
 // src/utils/meta-event.ts
-// Remove UserData from imports if it's not used
 import { CustomData, EventOptions } from './meta-event-types';
 
 const metaEvents = {
@@ -27,21 +26,29 @@ const metaEvents = {
         return fbcCookie ? fbcCookie.split('=')[1] : null;
       };
 
-      // Prepare event data
-      const eventData = {
-        eventName,
-        eventTime: Math.floor(Date.now() / 1000),
-        eventSourceUrl: options.url || (typeof window !== 'undefined' ? window.location.href : ''),
-        userData: {
-          fbp: getFbp(),
-          fbc: getFbc()
-        },
-        customData: customData,
-        eventId: options.eventId || `${eventName}_${Date.now()}`
+      // Format user data
+      const userData = {
+        client_user_agent: typeof navigator !== 'undefined' ? navigator.userAgent : '',
+        fbp: getFbp(),
+        fbc: getFbc()
+      };
+
+      // Prepare event data in the format Meta Conversions API expects
+      const payload = {
+        data: [{
+          event_name: eventName,
+          event_time: Math.floor(Date.now() / 1000),
+          event_id: options.eventId || `${eventName}_${Date.now()}`,
+          event_source_url: options.url || (typeof window !== 'undefined' ? window.location.href : ''),
+          action_source: 'server', // Mark as server event
+          user_data: userData,
+          custom_data: customData
+        }],
+        test_event_code: 'TEST49303' // Add test event code
       };
 
       // Log the event for debugging
-      console.log(`📊 Sending ${eventName} event to Meta CAPI`, eventData);
+      console.log(`📊 Sending ${eventName} event to Meta CAPI`, payload);
 
       // Send to your API endpoint
       const response = await fetch('/api/meta-event', {
@@ -49,7 +56,7 @@ const metaEvents = {
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify(eventData)
+        body: JSON.stringify(payload)
       });
 
       const result = await response.json();
