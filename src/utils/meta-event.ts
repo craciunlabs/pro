@@ -2,7 +2,7 @@
 import { CustomData, EventOptions, EventName } from './meta-event-types';
 
 // Re-export types correctly for isolatedModules
-export type { CustomData, EventOptions, EventName }; // Changed from "export" to "export type"
+export type { CustomData, EventOptions, EventName };
 
 // Meta Pixel ID - uses the one set in your HTML
 const FB_PIXEL_ID = '529577443168923'; 
@@ -18,7 +18,6 @@ export const metaEvents = {
    */
   init: () => {
     if (typeof window !== 'undefined' && !window.fbq) {
-      console.log('Initializing Meta Pixel');
       // Standard initialization code
       // This is usually handled by the script in index.html
     }
@@ -38,7 +37,6 @@ export const metaEvents = {
       
       // Check if we've already sent this event in the last 10 seconds
       if (eventCache.has(eventKey)) {
-        console.log(`🔄 Duplicate event prevented: ${eventName}`);
         return { success: false, duplicate: true };
       }
       
@@ -79,25 +77,22 @@ export const metaEvents = {
             user_data: userData,
             custom_data: customData,
             event_id: options.eventID || `client_${eventName}_${Date.now()}`
-          }],
-          test_event_code: 'TEST49303' // Remove this in production
+          }]
         })
       });
 
       const data = await response.json();
-      if (options.debug) {
-        console.log(`Event sent: ${eventName}`, data);
-      }
+      
       return { success: true, data };
     } catch (error) {
-      console.error(`Failed to send event: ${eventName}`, error);
       return { success: false, error };
     }
   },
 
   // Helper methods for common events
-  pageView: (options: EventOptions = {}) => 
-    metaEvents.sendEvent('PageView', {}, options),
+  pageView: (options: EventOptions = {}) => {
+    return metaEvents.sendEvent('PageView', {}, options);
+  },
   
   initiateCheckout: (valueOrData: number | CustomData, currencyOrOptions?: string | EventOptions, optionsParam?: EventOptions) => {
     // Normalize parameters to handle different call signatures
