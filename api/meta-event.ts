@@ -122,12 +122,16 @@ export default async function handler(
     // Send to Meta API
     try {
         console.log('API Function: Sending CAPI Event:', JSON.stringify(payload, null, 2));
-        const fetch = await import('node-fetch');
-        const metaResponse = await fetch.default(url, {
+        
+        // FIXED node-fetch import
+        const { default: fetch } = await import('node-fetch');
+        
+        const metaResponse = await fetch(url, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(payload),
         });
+        
         const responseText = await metaResponse.text();
         console.log('API Function: Meta Response Status:', metaResponse.status);
         console.log('API Function: Meta Response Text:', responseText);
