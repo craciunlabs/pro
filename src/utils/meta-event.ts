@@ -1,6 +1,8 @@
 // src/utils/meta-event.ts
 import { CustomData, EventOptions, EventName } from './meta-event-types';
-export { CustomData, EventOptions, EventName }; // Re-export for convenience
+
+// Re-export types correctly for isolatedModules
+export type { CustomData, EventOptions, EventName }; // Changed from "export" to "export type"
 
 // Meta Pixel ID - uses the one set in your HTML
 const FB_PIXEL_ID = '529577443168923'; 
