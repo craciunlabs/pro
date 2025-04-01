@@ -1,7 +1,8 @@
 // src/utils/meta-event.ts
 
 // Meta Pixel ID - uses the one set in your HTML
-const FB_PIXEL_ID = '529577443168923';
+const FB_PIXEL_ID = '529577443168923'; // Add export to fix TS6133 warning
+export { FB_PIXEL_ID }; // Export to prevent unused variable warning
 
 // Types for events
 export interface CustomData {
@@ -114,11 +115,25 @@ export const metaEvents = {
   // Helper methods for common events
   pageView: (options = {}) => metaEvents.sendEvent('PageView', {}, options),
   
-  purchase: (value: number, currency = 'EUR', options = {}) => 
-    metaEvents.sendEvent('Purchase', { value, currency }, options),
+  // Fix the signature to match how it's being called in components
+  purchase: (valueOrData: number | CustomData, currency = 'EUR', options = {}) => {
+    // Handle both forms: purchase(number) and purchase(customData)
+    if (typeof valueOrData === 'number') {
+      return metaEvents.sendEvent('Purchase', { value: valueOrData, currency }, options);
+    } else {
+      return metaEvents.sendEvent('Purchase', valueOrData, options);
+    }
+  },
   
-  initiateCheckout: (value: number, currency = 'EUR', options = {}) => 
-    metaEvents.sendEvent('InitiateCheckout', { value, currency }, options),
+  // Fix the signature to match how it's being called in components
+  initiateCheckout: (valueOrData: number | CustomData, currency = 'EUR', options = {}) => {
+    // Handle both forms: initiateCheckout(number) and initiateCheckout(customData)
+    if (typeof valueOrData === 'number') {
+      return metaEvents.sendEvent('InitiateCheckout', { value: valueOrData, currency }, options);
+    } else {
+      return metaEvents.sendEvent('InitiateCheckout', valueOrData, options);
+    }
+  },
 };
 
 export default metaEvents;
