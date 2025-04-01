@@ -1,198 +1,120 @@
-import type { VercelRequest, VercelResponse } from '@vercel/node';
+// /api/meta-event.ts
+import type { NextApiRequest, NextApiResponse } from 'next';
+import { LRUCache } from 'lru-cache'; // You may need to install this package
 
-// Updated interfaces to match the new data structure
-interface UserData {
-    client_user_agent?: string;
-    client_ip_address?: string;
-    fbc?: string;
-    fbp?: string;
-    em?: string; // Hashed email
-    ph?: string; // Hashed phone
-    external_id?: string; // Hashed user ID
-    [key: string]: string | undefined;
-}
+// Simple in-memory cache with a max of 100 items that expire after 10 seconds
+const eventCache = new LRUCache({
+  max: 100,
+  ttl: 10000, // 10 seconds
+});
 
-interface CustomData {
-    value?: number;
-    currency?: string;
-    [key: string]: any;
-}
-
-interface EventData {
-    event_name: string;
-    event_time: number;
-    event_source_url: string;
-    event_id?: string;
-    action_source?: string;
-    user_data?: UserData;
-    custom_data?: CustomData;
-}
-
-interface RequestBody {
-    data: EventData[];
-    test_event_code?: string;
-}
-
-interface MetaResponse {
-    success: boolean;
-    events_received?: number;
-    messages?: string[];
-    fbtrace_id?: string;
-}
-
-interface MetaError {
-    error: {
-        message: string;
-        type: string;
-        code: number;
-        fbtrace_id: string;
-    };
-}
+// Meta API constants - Use environment variables
+const PIXEL_ID = process.env.META_PIXEL_ID || '529577443168923';
+const FB_ACCESS_TOKEN = process.env.META_ACCESS_TOKEN || '';
+const API_VERSION = 'v18.0';
+const DOMAIN = process.env.META_DOMAIN || 'progressivemediumship.com';
 
 export default async function handler(
-    req: VercelRequest,
-    res: VercelResponse
+  req: NextApiRequest,
+  res: NextApiResponse
 ) {
-    // Allow CORS
-    res.setHeader('Access-Control-Allow-Credentials', 'true');
-    res.setHeader('Access-Control-Allow-Origin', '*'); // Restrict in production
-    res.setHeader('Access-Control-Allow-Methods', 'POST,OPTIONS');
-    res.setHeader(
-        'Access-Control-Allow-Headers',
-        'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version'
-    );
+  if (req.method !== 'POST') {
+    return res.status(405).json({ error: 'Method not allowed' });
+  }
 
-    // Handle OPTIONS preflight request for CORS
-    if (req.method === 'OPTIONS') {
-        res.status(200).end();
-        return;
-    }
-
-    // Only allow POST after handling OPTIONS
-    if (req.method !== 'POST') {
-        res.setHeader('Allow', ['POST', 'OPTIONS']);
-        return res.status(405).json({ message: `Method ${req.method} Not Allowed` });
-    }
-
-    console.log("API Function: Received POST request.");
-
-    // Parse the request body
-    const body = req.body as RequestBody;
+  try {
+    const body = req.body;
     
-    // NEW: Add debug logging for request body
-    console.log("API Function: Received body:", JSON.stringify(body, null, 2));
-    
-    // Check if the request body is properly formatted
-    if (!body || !body.data || !Array.isArray(body.data) || body.data.length === 0) {
-        console.error('API Function ERROR: Invalid request format. Expected {data: [...]}', body);
-        return res.status(400).json({ message: 'Invalid request format. Expected {data: [...]}' });
+    if (!body.data || !Array.isArray(body.data)) {
+      return res.status(400).json({ error: 'Invalid request format' });
     }
 
-    const pixelId = process.env.META_PIXEL_ID;
-    const accessToken = process.env.META_ACCESS_TOKEN;
-    const apiVersion = 'v19.0';
-
-    // NEW: Add debug logging for environment variables
-    console.log("API Function: Environment check:", {
-        has_pixel_id: !!pixelId,
-        has_access_token: !!accessToken,
-        pixel_id_partial: pixelId ? 
-            `${pixelId.substring(0, 4)}...` : 'not set',
-    });
-
-    // Validation
-    if (!pixelId || !accessToken) {
-        console.error('API Function ERROR: Missing Meta Pixel ID or Access Token env variables.');
-        return res.status(500).json({ message: 'Server configuration error.' });
-    }
+    const processedEvents = [];
     
     // Process each event
     for (const event of body.data) {
-        // Ensure required fields exist
-        if (!event.event_name || !event.event_time || !event.event_source_url) {
-            console.error('API Function ERROR: Missing required event data fields.', { event });
-            return res.status(400).json({ message: 'Missing required event data fields.' });
-        }
+      // Create a cache key based on event name, time window, and some user identifier
+      const eventKey = `${event.event_name}_${Math.floor(event.event_time / 10)}_${
+        event.user_data?.external_id || 'unknown'
+      }`;
+      
+      // Check for duplicate events
+      if (eventCache.get(eventKey)) {
+        console.log(`API Function: Prevented duplicate event: ${event.event_name}`);
+        continue; // Skip this event
+      }
+      
+      // Mark this event as seen
+      eventCache.set(eventKey, true);
+      
+      // Add server IP if available
+      if (!event.user_data.client_ip_address && req.headers['x-forwarded-for']) {
+        event.user_data.client_ip_address = 
+          Array.isArray(req.headers['x-forwarded-for'])
+            ? req.headers['x-forwarded-for'][0]
+            : req.headers['x-forwarded-for'].split(',')[0];
+      }
 
-        // Ensure action_source is "website" based on Meta's requirements
-        event.action_source = "website";
-
-        // Add IP address to user_data if available
-        if (!event.user_data) {
-            event.user_data = {};
-        }
-        
-        // Add the IP address if available
-        event.user_data.client_ip_address = event.user_data.client_ip_address || 
-                                           (req.headers['x-forwarded-for'] as string || 
-                                            req.socket?.remoteAddress || 
-                                            undefined);
-                                            
-        // Add a test external_id as required by Meta
-        if (!event.user_data.external_id) {
-            // For testing purposes only - in production, this should be a real hashed user ID
-            event.user_data.external_id = "test_user_123";
-        }
+      // Ensure domain is correct
+      if (!event.event_source_url || !event.event_source_url.includes(DOMAIN)) {
+        // Use the production domain
+        event.event_source_url = `https://${DOMAIN}${
+          req.headers.referer 
+            ? new URL(req.headers.referer).pathname 
+            : '/'
+        }`;
+      }
+      
+      // Make sure we have a proper action_source
+      event.action_source = 'website';
+      
+      // Add event_id with server prefix if not provided
+      if (!event.event_id) {
+        event.event_id = `server_${event.event_name}_${Date.now()}`;
+      }
+      
+      processedEvents.push(event);
     }
 
-    // Construct Payload - use the incoming payload directly, just adding test_event_code
-    const payload = {
-        ...body,
-        test_event_code: body.test_event_code || "TEST49303" // Use the one in body or default
+    if (processedEvents.length === 0) {
+      return res.status(200).json({ message: 'No events to process (all duplicates)' });
+    }
+
+    // Prepare the request to Meta Conversions API
+    const url = `https://graph.facebook.com/${API_VERSION}/${PIXEL_ID}/events`;
+    
+    const requestBody = {
+      data: processedEvents,
+      access_token: FB_ACCESS_TOKEN,
+      test_event_code: body.test_event_code || 'TEST49303' // Remove in production
     };
 
-    const url = `https://graph.facebook.com/${apiVersion}/${pixelId}/events?access_token=${accessToken}`;
+    // Send to Meta
+    const fbResponse = await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(requestBody)
+    });
 
-    // Send to Meta API using built-in fetch
-    try {
-        console.log('API Function: Sending CAPI Event:', JSON.stringify(payload, null, 2));
-        
-        // Use the built-in fetch function
-        const metaResponse = await fetch(url, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(payload),
-        });
-        
-        const responseText = await metaResponse.text();
-        console.log('API Function: Meta Response Status:', metaResponse.status);
-        console.log('API Function: Meta Response Text:', responseText);
-
-        if (!metaResponse.ok) {
-            console.error('API Function ERROR: Meta CAPI Request Failed:', metaResponse.status, responseText);
-            let errorData: MetaError;
-            try {
-                errorData = JSON.parse(responseText) as MetaError;
-            } catch (e) {
-                errorData = {
-                    error: {
-                        message: responseText,
-                        type: 'Unknown',
-                        code: metaResponse.status,
-                        fbtrace_id: 'unknown'
-                    }
-                };
-            }
-            return res.status(502).json({ message: 'Failed to send event to Meta.', details: errorData });
-        }
-
-        let metaResponseData: MetaResponse;
-        try {
-            metaResponseData = JSON.parse(responseText) as MetaResponse;
-        } catch (e) {
-            metaResponseData = {
-                success: false,
-                messages: [responseText]
-            };
-        }
-        console.log('API Function: Meta CAPI Succeeded:', metaResponseData);
-        return res.status(200).json({ message: 'Event sent via CAPI.', fb_response: metaResponseData });
-
-    } catch (error) {
-        // UPDATED: Enhanced error logging with stack trace if available
-        console.error('API Function ERROR: Exception calling Meta CAPI:', 
-            error instanceof Error ? error.stack : error);
-        const errorMessage = error instanceof Error ? error.message : 'Unknown error during fetch';
-        return res.status(500).json({ message: 'Internal server error while sending event.', error: errorMessage });
+    const fbData = await fbResponse.json();
+    
+    if (!fbResponse.ok) {
+      console.error('Error from Meta API:', fbData);
+      return res.status(fbResponse.status).json({ 
+        error: 'Error from Meta API', 
+        details: fbData 
+      });
     }
+
+    return res.status(200).json({ 
+      message: 'Event sent via CAPI.', 
+      fb_response: fbData 
+    });
+  } catch (error) {
+    console.error('Server error:', error);
+    return res.status(500).json({ 
+      error: 'Internal server error', 
+      message: error instanceof Error ? error.message : String(error)
+    });
+  }
 }

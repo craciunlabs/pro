@@ -1,70 +1,124 @@
 // src/utils/meta-event.ts
-import { CustomData, EventOptions } from './meta-event-types';
 
-const metaEvents = {
-  sendEvent: async (
-    eventName: string, 
-    customData: CustomData = { value: 0, currency: 'EUR' }, 
-    options: EventOptions = {}
-  ) => {
-    try {
-      // Using options parameter to avoid TypeScript warning
-      const debug = options.debug || false;
-      
-      // Simplified payload with server-specific parameters clearly set
-      const payload = {
-        data: [{
-          event_name: eventName,
-          event_time: Math.floor(Date.now() / 1000),
-          event_id: `server_${eventName}_${Date.now()}`, // Prefix with "server_" to distinguish
-          event_source_url: typeof window !== 'undefined' ? window.location.href : '',
-          action_source: "website", // Changed from "server" to "website" to match Meta's requirements
-          user_data: {
-            client_user_agent: typeof navigator !== 'undefined' ? navigator.userAgent : '',
-            // Add a test external_id for user identification as required by Meta
-            external_id: "test_user_123"
-          },
-          custom_data: customData
-        }],
-        test_event_code: "TEST49303" // Make sure this matches exactly what you see in Meta dashboard
-      };
+// Meta Pixel ID - uses the one set in your HTML
+const FB_PIXEL_ID = '529577443168923';
 
-      if (debug) console.log(`📊 Sending server-side ${eventName} event to Meta`, payload);
+// Types for events
+export interface CustomData {
+  value?: number;
+  currency?: string;
+  content_name?: string;
+  content_category?: string;
+  content_ids?: string[];
+  contents?: Array<{id: string, quantity: number}>;
+  content_type?: string;
+  num_items?: number;
+  status?: string;
+  [key: string]: any;
+}
 
-      const response = await fetch('/api/meta-event', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
-      });
+export interface EventOptions {
+  eventID?: string;
+  [key: string]: any;
+}
 
-      const result = await response.json();
-      
-      if (!response.ok) {
-        console.error('Error sending Meta event:', result);
-        return { success: false, ...result };
-      }
-      
-      if (debug) console.log(`✅ Server-side ${eventName} event sent successfully`);
-      return { success: true, ...result };
-    } catch (error) {
-      console.error('Error sending Meta event:', error);
-      return { success: false, error: error instanceof Error ? error.message : 'Unknown error' };
+interface UserData {
+  external_id?: string;
+  client_user_agent?: string;
+  client_ip_address?: string;
+  em?: string; // hashed email
+  ph?: string; // hashed phone
+  fn?: string; // hashed first name
+  ln?: string; // hashed last name
+  [key: string]: any;
+}
+
+// Event cache to prevent duplicates
+const eventCache = new Set();
+
+// Meta Pixel events utility
+export const metaEvents = {
+  /**
+   * Initialize Meta Pixel
+   */
+  init: () => {
+    if (typeof window !== 'undefined' && !window.fbq) {
+      console.log('Initializing Meta Pixel');
+      // Standard initialization code
+      // This is usually handled by the script in index.html
     }
   },
 
-  // Keep your convenience methods as they are
-  pageView: (customData: CustomData = { value: 0, currency: 'EUR' }, options: EventOptions = {}) => {
-    return metaEvents.sendEvent('PageView', customData, options);
-  },
-  
-  purchase: (customData: CustomData = { value: 0, currency: 'EUR' }, options: EventOptions = {}) => {
-    return metaEvents.sendEvent('Purchase', customData, options);
+  /**
+   * Send event to Meta Pixel
+   */
+  sendEvent: async (
+    eventName: string, 
+    customData: CustomData = {}, 
+    options: EventOptions = {}
+  ) => {
+    try {
+      // Create a unique key for this event to prevent duplicates
+      const eventKey = `${eventName}_${JSON.stringify(customData)}_${Date.now().toString().substring(0, 8)}`;
+      
+      // Check if we've already sent this event in the last 10 seconds
+      if (eventCache.has(eventKey)) {
+        console.log(`🔄 Duplicate event prevented: ${eventName}`);
+        return { success: false, duplicate: true };
+      }
+      
+      // Add to cache with 10-second expiration
+      eventCache.add(eventKey);
+      setTimeout(() => {
+        eventCache.delete(eventKey);
+      }, 10000);
+
+      // Client-side uses browser's user agent
+      const userData: UserData = {
+        external_id: options.external_id || 'anonymous',
+        client_user_agent: navigator.userAgent
+      };
+
+      // Track on client side too for redundancy
+      if (typeof window !== 'undefined' && window.fbq) {
+        window.fbq('track', eventName, customData, { eventID: options.eventID });
+      }
+
+      // Send to server endpoint
+      const response = await fetch('/api/meta-event', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          data: [{
+            event_name: eventName,
+            event_time: Math.floor(Date.now() / 1000),
+            event_source_url: window.location.href,
+            action_source: 'website',
+            user_data: userData,
+            custom_data: customData,
+            event_id: options.eventID || `client_${eventName}_${Date.now()}`
+          }],
+          test_event_code: 'TEST49303' // Remove this in production
+        })
+      });
+
+      const data = await response.json();
+      console.log(`Event sent: ${eventName}`, data);
+      return { success: true, data };
+    } catch (error) {
+      console.error(`Failed to send event: ${eventName}`, error);
+      return { success: false, error };
+    }
   },
 
-  // Add the missing initiateCheckout method
-  initiateCheckout: (customData: CustomData = { value: 0, currency: 'EUR' }, options: EventOptions = {}) => {
-    return metaEvents.sendEvent('InitiateCheckout', customData, options);
-  }
+  // Helper methods for common events
+  pageView: (options = {}) => metaEvents.sendEvent('PageView', {}, options),
+  
+  purchase: (value: number, currency = 'EUR', options = {}) => 
+    metaEvents.sendEvent('Purchase', { value, currency }, options),
+  
+  initiateCheckout: (value: number, currency = 'EUR', options = {}) => 
+    metaEvents.sendEvent('InitiateCheckout', { value, currency }, options),
 };
 
 export default metaEvents;

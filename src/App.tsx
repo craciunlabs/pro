@@ -36,15 +36,7 @@ function App() {
 
     // Effect for Meta Pixel PageView Tracking & closing mobile menu
     useEffect(() => {
-        // Client-side Meta Pixel tracking (existing)
-        if (window.fbq) {
-            console.log('Meta Pixel: Tracking PageView for', location.pathname);
-            window.fbq('track', 'PageView');
-        } else {
-            console.warn('Meta Pixel (window.fbq) not found.');
-        }
-
-        // Server-side Meta CAPI tracking (new)
+        // Server-side Meta CAPI tracking (this will also handle client-side)
         metaEvents.pageView();
         
         setIsMobileMenuOpen(false); // Close menu on navigation
@@ -86,7 +78,7 @@ function App() {
                 </Routes>
             </main>
 
-             {/* Conditionally render Footer - navLinks prop KEPT */}
+            {/* Conditionally render Footer - navLinks prop KEPT */}
             {!isThankYouPage && (
                 <Footer navLinks={navLinks} />
             )}
