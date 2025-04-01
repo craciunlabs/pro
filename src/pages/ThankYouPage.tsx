@@ -8,21 +8,111 @@ import { faFacebookF } from '@fortawesome/free-brands-svg-icons';
 import styles from './ThankYouPage.module.css'; // Ensure this CSS module exists
 import metaEvents from '../utils/meta-event';
 import { CustomData } from '../utils/meta-event-types';
+import { useRouter } from 'next/router'; // Add this import for URL parameter access
 
 // Declare fbq for TypeScript
 declare global { interface Window { fbq?: (...args: any[]) => void; } }
 
+// Function to get fbclid from URL or localStorage
+const getFbclid = (): string | null => {
+  if (typeof window === 'undefined') return null;
+  
+  // Try to get from URL first
+  const urlParams = new URLSearchParams(window.location.search);
+  const fbclidFromUrl = urlParams.get('fbclid');
+  
+  if (fbclidFromUrl) {
+    // Store in localStorage for future use
+    try {
+      localStorage.setItem('fbclid', fbclidFromUrl);
+      localStorage.setItem('fbclid_timestamp', Date.now().toString());
+    } catch (e) {
+      console.warn('Unable to store fbclid in localStorage');
+    }
+    return fbclidFromUrl;
+  }
+  
+  // Try to get from localStorage if not in URL
+  try {
+    const storedFbclid = localStorage.getItem('fbclid');
+    const timestamp = localStorage.getItem('fbclid_timestamp');
+    
+    // Check if fbclid exists and is still valid (7 days)
+    if (storedFbclid && timestamp) {
+      const expiryTime = parseInt(timestamp) + (7 * 24 * 60 * 60 * 1000);
+      if (Date.now() < expiryTime) {
+        return storedFbclid;
+      }
+    }
+  } catch (e) {
+    console.warn('Unable to retrieve fbclid from localStorage');
+  }
+  
+  return null;
+};
+
+// Function to get fbc (Click ID) in the proper format
+const getFbc = (): string | null => {
+  const fbclid = getFbclid();
+  if (!fbclid) return null;
+  
+  // Format: fb.1.{timestamp}.{fbclid}
+  const timestamp = Math.floor(Date.now() / 1000);
+  return `fb.1.${timestamp}.${fbclid}`;
+};
+
+// Function to get fbp (Browser ID) from cookies
+const getFbp = (): string | null => {
+  if (typeof window === 'undefined' || typeof document === 'undefined') return null;
+  
+  // Try to get _fbp cookie
+  const cookies = document.cookie.split(';');
+  const fbpCookie = cookies.find(cookie => cookie.trim().startsWith('_fbp='));
+  
+  if (fbpCookie) {
+    return fbpCookie.trim().substring(5); // Remove '_fbp=' prefix
+  }
+  
+  return null;
+};
+
 const ThankYouPage: React.FC = () => {
     const confirmationBoxRef = useRef<HTMLDivElement>(null);
+    const router = useRouter(); // Access router for URL parameters
 
     // --- Meta Pixel & CAPI Tracking ---
     useEffect(() => {
-        // --- 1. Client-Side Pixel Event ---
+        // Get Facebook Click ID and Browser ID
+        const fbc = getFbc();
+        const fbp = getFbp();
+        
+        // Prepare user data for better tracking
+        const userData: Record<string, any> = {};
+        if (fbc) userData.fbc = fbc;
+        if (fbp) userData.fbp = fbp;
+        
+        // Event ID to prevent duplicates
+        const eventID = `purchase_${Date.now()}`;
+
+        // --- 1. Client-Side Pixel Event with improved parameters ---
         if (window.fbq) {
             console.log('Firing Meta Pixel Purchase Event (Client-Side)');
-            const purchaseValue = 1295; // Example value
-            const currency = 'EUR';
-            window.fbq('track', 'Purchase', { value: purchaseValue, currency: currency });
+            const purchaseData = { 
+                value: 1295, 
+                currency: 'EUR',
+                content_ids: ['progressive-mediumship-course'],
+                content_name: 'Progressive Mediumship Course'
+            };
+            
+            // Include fbc in client-side event if available
+            const eventOptions = { eventID };
+            if (fbc) {
+                console.log('Including fbc in client-side event:', fbc);
+                // @ts-ignore - fbq accepts fbc but TypeScript might not know
+                eventOptions.fbc = fbc;
+            }
+            
+            window.fbq('track', 'Purchase', purchaseData, eventOptions);
         }
         
         // --- 2. Server-Side CAPI Trigger using metaEvents utility ---
@@ -33,9 +123,24 @@ const ThankYouPage: React.FC = () => {
             content_name: 'Progressive Mediumship Course'
         };
         
-        metaEvents.purchase(customData);
-    }, []); // Run only once
+        console.log('Sending server-side purchase event with userData:', userData);
+        
+        // Get any Calendly parameters if they were passed
+        const eventUuid = router.query.event_uuid as string;
+        if (eventUuid) {
+            customData.transaction_id = eventUuid;
+        }
+        
+        metaEvents.purchase(customData, {
+            eventID,
+            userData: userData as any // Cast to expected type
+        });
+        
+        // Store that this conversion has been tracked to prevent duplicates
+        sessionStorage.setItem('purchase_tracked', 'true');
+    }, [router.isReady]); // Depend on router.isReady to ensure URL params are available
 
+    // --- Rest of your component remains the same ---
     // --- Confetti Effect ---
     useEffect(() => {
         const isMobile = () => window.innerWidth <= 768;
@@ -85,6 +190,7 @@ const ThankYouPage: React.FC = () => {
                 {/* Confetti injected via useEffect */}
             </div>
 
+            {/* Rest of your component remains unchanged */}
             {/* Course Details Boxes */}
             <div className={styles.courseDetails}>
                 <div className={styles.detailBox}>

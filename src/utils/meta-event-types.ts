@@ -1,51 +1,6 @@
 // src/utils/meta-event-types.ts
 
-export interface CustomData {
-  value?: number;
-  currency?: string;
-  content_name?: string;
-  content_category?: string;
-  content_ids?: string[];
-  contents?: Array<{
-      id?: string;
-      quantity?: number;
-      item_price?: number;
-  }>;
-  content_type?: string;
-  order_id?: string;
-  predicted_ltv?: number;
-  num_items?: number;
-  search_string?: string;
-  status?: string;
-  [key: string]: any;
-}
-
-export interface EventOptions {
-  debug?: boolean;
-  eventID?: string;
-  eventSourceUrl?: string;
-  userData?: {
-      email?: string;
-      phone?: string;
-      firstName?: string;
-      lastName?: string;
-      gender?: string;
-      city?: string;
-      state?: string;
-      zip?: string;
-      country?: string;
-      externalId?: string;
-      clientIpAddress?: string;
-      clientUserAgent?: string;
-      fbc?: string;
-      fbp?: string;
-      subscriptionId?: string;
-      fbLoginId?: string;
-      leadId?: string;
-      [key: string]: string | undefined;
-  };
-}
-
+// Common Meta Pixel event names
 export type EventName = 
   | 'PageView'
   | 'AddPaymentInfo'
@@ -65,3 +20,45 @@ export type EventName =
   | 'SubmitApplication'
   | 'Subscribe'
   | 'ViewContent';
+
+// Custom event data parameters
+export interface CustomData {
+  [key: string]: any;
+  value?: number;
+  currency?: string;
+  content_name?: string;
+  content_category?: string;
+  content_ids?: string[];
+  content_type?: string;
+  order_id?: string;
+  transaction_id?: string;
+  predicted_ltv?: number;
+  num_items?: number;
+  search_string?: string;
+  status?: string;
+}
+
+// User data for better matching
+export interface UserData {
+  externalId?: string;
+  clientIpAddress?: string;
+  email?: string;
+  phone?: string;
+  firstName?: string;
+  lastName?: string;
+  gender?: string;
+  city?: string;
+  state?: string;
+  zip?: string;
+  country?: string;
+  birthdate?: string;
+  fbc?: string; // Facebook Click ID
+  fbp?: string; // Facebook Browser ID
+}
+
+// Options for event tracking
+export interface EventOptions {
+  eventID?: string;
+  eventSourceUrl?: string;
+  userData?: UserData;
+}
