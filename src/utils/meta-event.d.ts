@@ -3,6 +3,8 @@ declare module '../utils/meta-event' {
   interface CustomData {
     value: number;
     currency: string;
+    content_ids?: string[];
+    content_name?: string;
     [key: string]: any;
   }
 
@@ -27,6 +29,8 @@ declare module '../../utils/meta-event' {
   interface CustomData {
     value: number;
     currency: string;
+    content_ids?: string[];
+    content_name?: string;
     [key: string]: any;
   }
 
