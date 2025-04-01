@@ -111,6 +111,9 @@ export default async function handler(
             return res.status(400).json({ message: 'Missing required event data fields.' });
         }
 
+        // Ensure action_source is "website" based on Meta's requirements
+        event.action_source = "website";
+
         // Add IP address to user_data if available
         if (event.user_data) {
             event.user_data.client_ip_address = event.user_data.client_ip_address || 

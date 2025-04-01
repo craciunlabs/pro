@@ -18,7 +18,7 @@ const metaEvents = {
           event_time: Math.floor(Date.now() / 1000),
           event_id: `server_${eventName}_${Date.now()}`, // Prefix with "server_" to distinguish
           event_source_url: typeof window !== 'undefined' ? window.location.href : '',
-          action_source: "server", // This must be exactly "server"
+          action_source: "website", // Changed from "server" to "website" to match Meta's requirements
           user_data: {
             client_user_agent: typeof navigator !== 'undefined' ? navigator.userAgent : ''
           },
