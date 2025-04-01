@@ -1,4 +1,4 @@
-// src/utils/meta-event.ts (simplified version)
+// src/utils/meta-event.ts
 import { CustomData, EventOptions } from './meta-event-types';
 
 const metaEvents = {
@@ -8,6 +8,9 @@ const metaEvents = {
     options: EventOptions = {}
   ) => {
     try {
+      // Using options parameter to avoid TypeScript warning
+      const debug = options.debug || false;
+      
       // Simplified payload with server-specific parameters clearly set
       const payload = {
         data: [{
@@ -24,7 +27,7 @@ const metaEvents = {
         test_event_code: "TEST49303" // Make sure this matches exactly what you see in Meta dashboard
       };
 
-      console.log(`📊 Sending server-side ${eventName} event to Meta`, payload);
+      if (debug) console.log(`📊 Sending server-side ${eventName} event to Meta`, payload);
 
       const response = await fetch('/api/meta-event', {
         method: 'POST',
@@ -39,7 +42,7 @@ const metaEvents = {
         return { success: false, ...result };
       }
       
-      console.log(`✅ Server-side ${eventName} event sent successfully`);
+      if (debug) console.log(`✅ Server-side ${eventName} event sent successfully`);
       return { success: true, ...result };
     } catch (error) {
       console.error('Error sending Meta event:', error);
@@ -55,8 +58,11 @@ const metaEvents = {
   purchase: (customData: CustomData = { value: 0, currency: 'EUR' }, options: EventOptions = {}) => {
     return metaEvents.sendEvent('Purchase', customData, options);
   },
-  
-  // ...other methods...
+
+  // Add the missing initiateCheckout method
+  initiateCheckout: (customData: CustomData = { value: 0, currency: 'EUR' }, options: EventOptions = {}) => {
+    return metaEvents.sendEvent('InitiateCheckout', customData, options);
+  }
 };
 
 export default metaEvents;
