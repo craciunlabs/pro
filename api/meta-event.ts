@@ -76,6 +76,9 @@ export default async function handler(
     // Parse the request body
     const body = req.body as RequestBody;
     
+    // NEW: Add debug logging for request body
+    console.log("API Function: Received body:", JSON.stringify(body, null, 2));
+    
     // Check if the request body is properly formatted
     if (!body || !body.data || !Array.isArray(body.data) || body.data.length === 0) {
         console.error('API Function ERROR: Invalid request format. Expected {data: [...]}', body);
@@ -85,6 +88,14 @@ export default async function handler(
     const pixelId = process.env.META_PIXEL_ID;
     const accessToken = process.env.META_ACCESS_TOKEN;
     const apiVersion = 'v19.0';
+
+    // NEW: Add debug logging for environment variables
+    console.log("API Function: Environment check:", {
+        has_pixel_id: !!pixelId,
+        has_access_token: !!accessToken,
+        pixel_id_partial: pixelId ? 
+            `${pixelId.substring(0, 4)}...` : 'not set',
+    });
 
     // Validation
     if (!pixelId || !accessToken) {
@@ -163,7 +174,9 @@ export default async function handler(
         return res.status(200).json({ message: 'Event sent via CAPI.', fb_response: metaResponseData });
 
     } catch (error) {
-        console.error('API Function ERROR: Exception calling Meta CAPI:', error);
+        // UPDATED: Enhanced error logging with stack trace if available
+        console.error('API Function ERROR: Exception calling Meta CAPI:', 
+            error instanceof Error ? error.stack : error);
         const errorMessage = error instanceof Error ? error.message : 'Unknown error during fetch';
         return res.status(500).json({ message: 'Internal server error while sending event.', error: errorMessage });
     }
