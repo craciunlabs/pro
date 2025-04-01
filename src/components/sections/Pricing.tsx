@@ -4,6 +4,7 @@ import styles from './Pricing.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faExclamationCircle } from '@fortawesome/free-solid-svg-icons';
 import { useInView } from 'react-intersection-observer';
+import metaEvents from '../../utils/metaEvents'; // Import the metaEvents utility
 
 declare global { interface Window { fbq?: (...args: any[]) => void; } }
 
@@ -19,11 +20,27 @@ const Pricing: React.FC = () => {
       const eventData = {
           content_name: `Progressive Mediumship Course 2025 - ${isFullPayment ? 'Full Payment' : 'Payment Plan'}`,
           content_ids: [isFullPayment ? 'PMC2025-FULL' : 'PMC2025-PLAN'],
-          content_type: 'product', currency: 'EUR',
+          content_type: 'product', 
+          currency: 'EUR',
           value: isFullPayment ? 1295 : 395,
       };
-      if (window.fbq) { window.fbq('track', 'InitiateCheckout', eventData); }
-      else { console.warn('Meta Pixel (fbq) not loaded.'); }
+      
+      // Client-side Meta Pixel tracking (existing)
+      if (window.fbq) { 
+          window.fbq('track', 'InitiateCheckout', eventData); 
+      }
+      else { 
+          console.warn('Meta Pixel (fbq) not loaded.'); 
+      }
+      
+      // Add server-side Meta CAPI tracking
+      metaEvents.initiateCheckout({
+          value: isFullPayment ? 1295 : 395,
+          currency: 'EUR',
+          content_ids: [isFullPayment ? 'PMC2025-FULL' : 'PMC2025-PLAN'],
+          content_name: `Progressive Mediumship Course 2025 - ${isFullPayment ? 'Full Payment' : 'Payment Plan'}`,
+          content_type: 'product'
+      });
     };
 
     return (
@@ -37,7 +54,7 @@ const Pricing: React.FC = () => {
 
                 <div ref={bannerRef} className={`banner ${styles.pricingBanner} ${bannerInView ? 'animate fade-up' : 'animate'}`}>
                     <div className="banner-icon"><FontAwesomeIcon icon={faExclamationCircle} /></div>
-                    <div>Only 5 spaces remaining — 9 spots already taken!</div>
+                    <div>Only 5 spaces remaining -- 9 spots already taken!</div>
                 </div>
 
                 <div className={styles.pricingGrid}>

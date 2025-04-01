@@ -2,9 +2,25 @@
 import React from 'react';
 import styles from './CTA.module.css';
 import { useInView } from 'react-intersection-observer';
+import metaEvents from '../../utils/metaEvents'; // Import the metaEvents utility
 
 const CTA: React.FC = () => {
     const { ref: contentRef, inView: contentInView } = useInView({ triggerOnce: true, threshold: 0.1 });
+
+    // Add this function to handle the CTA click
+    const handleCtaClick = () => {
+        // Track InitiateCheckout event through Meta CAPI
+        metaEvents.initiateCheckout({
+            value: 1295, // The price of your course
+            currency: 'EUR',
+            content_ids: ['progressive-mediumship-course'],
+            content_name: 'Progressive Mediumship Course',
+            content_category: 'Course Registration'
+        });
+        
+        // The actual navigation happens through the href attribute,
+        // so no need to add navigation code here
+    };
 
     return (
         // Use module style for section
@@ -23,8 +39,14 @@ const CTA: React.FC = () => {
 
                     <p className={styles.ctaText}>Your decision to develop your gifts is a gift to both yourself and those you'll serve. This 8+ month journey will transform not just your mediumship skills but your relationship with your own intuitive abilities.</p>
 
-                     {/* Use global button classes */}
-                    <a href="https://calendly.com/miaottosson/progressive-mediumship-2025/2025-04-09T18:00:00+02:00?month=2025-04&date=2025-04-09" target="_blank" rel="noopener noreferrer" className={`btn btn-accent btn-large ${styles.ctaButton}`}>
+                     {/* Use global button classes with added onClick handler */}
+                    <a 
+                        href="https://calendly.com/miaottosson/progressive-mediumship-2025/2025-04-09T18:00:00+02:00?month=2025-04&date=2025-04-09" 
+                        target="_blank" 
+                        rel="noopener noreferrer" 
+                        className={`btn btn-accent btn-large ${styles.ctaButton}`}
+                        onClick={handleCtaClick} // Add the click handler here
+                    >
                         Secure Your Place Today
                     </a>
 

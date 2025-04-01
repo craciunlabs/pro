@@ -15,6 +15,9 @@ import MobileBottomBar from './components/sections/MobileBottomBar';
 import LandingPage from './pages/LandingPage';
 import ThankYouPage from './pages/ThankYouPage';
 
+// --- Import Meta Events Utility ---
+import metaEvents from './utils/metaEvents';
+
 // Declare fbq global function for TypeScript
 declare global { interface Window { fbq?: (...args: any[]) => void; } }
 
@@ -33,12 +36,17 @@ function App() {
 
     // Effect for Meta Pixel PageView Tracking & closing mobile menu
     useEffect(() => {
+        // Client-side Meta Pixel tracking (existing)
         if (window.fbq) {
             console.log('Meta Pixel: Tracking PageView for', location.pathname);
             window.fbq('track', 'PageView');
         } else {
             console.warn('Meta Pixel (window.fbq) not found.');
         }
+
+        // Server-side Meta CAPI tracking (new)
+        metaEvents.pageView();
+        
         setIsMobileMenuOpen(false); // Close menu on navigation
     }, [location.pathname]);
 
