@@ -82,7 +82,9 @@ export default async function handler(
         console.error('API Function ERROR: Missing Meta Pixel ID or Access Token env variables.');
         return res.status(500).json({ message: 'Server configuration error.' });
     }
-    if (!eventName || !eventTime || !eventSourceUrl || !customData?.value || !customData?.currency) {
+    
+    // FIXED VALIDATION: Use explicit check for undefined instead of truthy/falsy check
+    if (!eventName || !eventTime || !eventSourceUrl || customData?.value === undefined || !customData?.currency) {
         console.error('API Function ERROR: Missing required event data fields.', { body });
         return res.status(400).json({ message: 'Missing required event data fields.' });
     }
@@ -165,4 +167,4 @@ export default async function handler(
         const errorMessage = error instanceof Error ? error.message : 'Unknown error during fetch';
         return res.status(500).json({ message: 'Internal server error while sending event.', error: errorMessage });
     }
-} 
+}
