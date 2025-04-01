@@ -1,5 +1,6 @@
 // src/utils/meta-event.ts
-import { UserData, CustomData, EventOptions } from './meta-event-types';
+// Remove UserData from imports if it's not used
+import { CustomData, EventOptions } from './meta-event-types';
 
 const metaEvents = {
   /**
