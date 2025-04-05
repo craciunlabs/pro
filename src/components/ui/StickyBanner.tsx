@@ -14,11 +14,11 @@ const StickyBanner: React.FC<StickyBannerProps> = ({
   spotsRemaining = 3 
 }) => {
   return (
-    <div className={styles.stickyBanner}>
+    <a href="#pricing" className={styles.stickyBanner}>
       <span className={styles.fireEmoji}><FontAwesomeIcon icon={faFire} /></span>
       <span>{message}: ONLY {spotsRemaining} SPOTS REMAINING</span>
       <span className={styles.fireEmoji}><FontAwesomeIcon icon={faFire} /></span>
-    </div>
+    </a>
   );
 };
 

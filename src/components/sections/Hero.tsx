@@ -37,12 +37,12 @@ const Hero: React.FC = () => {
                         spotsRemaining={3} 
                     />
 
-                    <div className="button-group">
-                        <a href="#pricing" className={`btn btn-primary btn-large ${styles.heroCta}`}>
+                    <div className={styles.heroButtonGroup}>
+                        <a href="#pricing" className={`btn btn-primary ${styles.heroCta}`}>
                             Secure Your Place Now
                         </a>
-                        <a href="#about" className={`btn btn-secondary ${styles.heroCta}`}>
-                            Learn More About the Program
+                        <a href="#about" className={`btn btn-light ${styles.heroSecondary}`}>
+                            Learn More
                         </a>
                     </div>
                 </div>

@@ -1,100 +1,86 @@
 /* src/components/sections/Header.module.css */
 .header {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    padding: 30px 0; /* Desktop padding */
+    padding: 15px 0;
+    position: relative;
     z-index: 100;
-    transition: background-color 0.3s ease;
-}
-
-.headerContainer {
+    background-color: transparent;
+  }
+  
+  .headerContainer {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    /* Uses global .container for max-width and padding */
-}
-
-.logo {
+    padding: 0 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  
+  .logo {
     font-family: 'Outfit', sans-serif;
     font-weight: 700;
     font-size: 1.5rem;
     color: var(--light);
     text-decoration: none;
     transition: opacity 0.3s ease;
-    position: relative;
-    z-index: 101;
-}
-.logo:hover {
-    opacity: 0.8;
-}
-
-.mobileMenuBtn {
-    display: none; /* Hidden by default, shown via media query */
+  }
+  
+  .logo:hover {
+    opacity: 0.9;
+  }
+  
+  .headerCta {
+    padding: 8px 16px;
+    font-size: 0.9rem;
+    border-radius: 50px;
+    background-color: var(--light);
+    color: var(--primary);
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    display: inline-block;
+    font-family: 'Outfit', sans-serif;
+  }
+  
+  .headerCta:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .mobileMenuBtn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     background: none;
     border: none;
     color: var(--light);
-    font-size: 1.8rem;
+    font-size: 1.5rem;
     cursor: pointer;
-    padding: 5px;
-    line-height: 1;
-    border-radius: 4px;
-    position: relative;
-    z-index: 101;
-}
-.mobileMenuBtn:focus-visible {
-     outline: 2px solid var(--light);
-     outline-offset: 2px;
-}
-
-/* Desktop enroll button - uses global .btn and .btn-light */
-.desktopEnrollBtn {
-   /* No specific overrides needed unless changing base .btn-light */
-   position: relative;
-   z-index: 101;
-}
-
-
-/* --- Responsive --- */
-@media (max-width: 767px) {
+    padding: 8px;
+    border-radius: 8px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .mobileMenuBtn:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+  
+  /* Mobile optimizations */
+  @media (max-width: 767px) {
     .header {
-        padding: 15px 0; /* Reduced padding for mobile */
-        /* Make background transparent to blend with hero */
-        background-color: transparent;
-        position: absolute; /* Keep it positioned absolutely */
+      padding: 10px 0;
     }
-    .headerContainer {
-        /* Adjust alignment for mobile if logo needs centering */
-        /* justify-content: center; */ /* Uncomment to center logo+button */
-        /* position: relative; */ /* Needed if centering */
+    
+    .logo {
+      font-size: 1.3rem;
     }
-     .logo {
-         /* If not centering, ensure it's visible */
-         flex-grow: 1; /* Allow logo to take space */
-         text-align: left; /* Or center if desired */
-         margin-left: 5px; /* Ensure some padding */
-         font-size: 1.3rem; /* Slightly smaller on mobile */
-     }
-
+    
+    .headerCta {
+      padding: 6px 12px;
+      font-size: 0.8rem;
+    }
+    
     .mobileMenuBtn {
-        display: block; /* Show mobile button */
-        margin-right: 5px; /* Ensure some padding */
+      font-size: 1.3rem;
+      padding: 6px;
     }
-
-    .desktopEnrollBtn {
-        display: none; /* Hide desktop enroll button */
-    }
-}
-
-/* Desktop view */
-@media (min-width: 768px) {
-     .mobileMenuBtn {
-         display: none; /* Hide mobile button */
-     }
-     .desktopEnrollBtn {
-         display: inline-flex; /* Ensure it shows */
-     }
-     /* Ensure header background isn't transparent on desktop if needed */
-     /* .header { background-color: transparent; } */
-}
+  }

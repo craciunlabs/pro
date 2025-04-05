@@ -42,6 +42,20 @@ function App() {
         setIsMobileMenuOpen(false);
     }, [location.pathname]);
 
+    // Effect to add margin to body when sticky banner is shown
+    useEffect(() => {
+        if (!location.pathname.includes('thank-you')) {
+            // Add padding to body to account for sticky banner
+            document.body.style.paddingTop = '34px';
+        } else {
+            document.body.style.paddingTop = '0';
+        }
+        
+        return () => {
+            document.body.style.paddingTop = '0';
+        };
+    }, [location.pathname]);
+
     // Navigation links data (still needed for MobileMenu and Footer)
     const navLinks = [
         { href: "/#about", label: "About the Program" }, { href: "/#about-mentor", label: "About Mia" },
