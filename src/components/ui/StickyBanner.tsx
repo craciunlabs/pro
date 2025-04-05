@@ -9,8 +9,16 @@ interface StickyBannerProps {
 }
 
 const StickyBanner: React.FC<StickyBannerProps> = ({ spotsRemaining }) => {
+  const handleClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    const pricingSection = document.getElementById('pricing');
+    if (pricingSection) {
+      pricingSection.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
-    <a href="#pricing" className={styles.stickyBanner}>
+    <a href="#pricing" className={styles.stickyBanner} onClick={handleClick}>
       <FontAwesomeIcon icon={faFire} className={styles.fireEmoji} />
       ENROLLMENT CLOSING SOON: ONLY {spotsRemaining} SPOTS 
       <span className={styles.remainingText}>REMAINING</span>

@@ -2,7 +2,7 @@
 .countdownWrapper {
   margin: 20px 0;
   width: 100%;
-  max-width: 520px;
+  max-width: 550px;
   align-self: center;
   border-radius: 10px;
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
@@ -11,7 +11,7 @@
 
 .countdownContainer {
   background: linear-gradient(45deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.18) 100%);
-  padding: 15px 18px;
+  padding: 18px 20px;
   backdrop-filter: blur(5px);
 }
 
@@ -19,12 +19,12 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 10px;
+  margin-bottom: 12px;
   padding: 0 4px;
 }
 
 .countdownTitle {
-  font-size: 0.95rem;
+  font-size: 1.05rem; /* Increased from 0.95rem */
   font-weight: bold;
   white-space: nowrap;
   font-family: 'Outfit', sans-serif;
@@ -32,7 +32,7 @@
 }
 
 .nowOrNext {
-  font-size: 0.8rem;
+  font-size: 0.9rem; /* Increased from 0.8rem */
   color: var(--accent-secondary);
   font-weight: 600;
   font-family: 'Outfit', sans-serif;
@@ -42,7 +42,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 4px;
+  gap: 5px;
 }
 
 .countdownItem {
@@ -50,17 +50,17 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin: 0 3px;
+  margin: 0 5px;
 }
 
 .countdownNumber {
-  font-size: 1.6rem;
+  font-size: 1.85rem; /* Increased from 1.6rem */
   font-weight: bold;
   background-color: rgba(0, 0, 0, 0.25);
   border-radius: 8px;
-  padding: 6px;
-  min-width: 45px;
-  height: 45px;
+  padding: 8px;
+  min-width: 55px; /* Increased from 45px */
+  height: 55px; /* Increased from 45px */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -70,17 +70,17 @@
 }
 
 .countdownLabel {
-  font-size: 0.7rem;
+  font-size: 0.75rem; /* Increased from 0.7rem */
   text-transform: uppercase;
   letter-spacing: 1px;
-  margin-top: 5px;
+  margin-top: 6px;
   opacity: 0.9;
   font-family: 'DM Sans', sans-serif;
   color: rgba(255, 255, 255, 0.8);
 }
 
 .countdownDivider {
-  font-size: 1.6rem;
+  font-size: 1.85rem; /* Increased from 1.6rem */
   font-weight: bold;
   display: flex;
   align-items: center;
@@ -90,11 +90,11 @@
 
 .limitedOffer {
   background-color: rgba(242, 201, 76, 0.2);
-  padding: 10px;
+  padding: 12px;
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: 0.85rem;
+  font-size: 0.92rem; /* Increased from 0.85rem */
   font-family: 'DM Sans', sans-serif;
   justify-content: center;
   color: rgba(255, 255, 255, 0.9);
@@ -103,7 +103,7 @@
 
 .limitedOfferIcon {
   color: var(--accent-secondary);
-  font-size: 1rem;
+  font-size: 1.1rem; /* Increased from 1rem */
 }
 
 .spotsHighlight {
@@ -119,51 +119,51 @@
   }
   
   .countdownContainer {
-    padding: 12px 15px;
+    padding: 14px 15px;
   }
   
   .countdownHeader {
-    margin-bottom: 8px;
+    margin-bottom: 10px;
   }
   
   .countdownTitle {
-    font-size: 0.85rem;
+    font-size: 0.95rem; /* Increased from 0.85rem */
   }
   
   .nowOrNext {
-    font-size: 0.75rem;
+    font-size: 0.85rem; /* Increased from 0.75rem */
   }
   
   .countdownNumber {
-    font-size: 1.4rem;
-    min-width: 40px;
-    height: 40px;
+    font-size: 1.6rem; /* Increased from 1.4rem */
+    min-width: 46px; /* Increased from 40px */
+    height: 46px; /* Increased from 40px */
     padding: 5px;
   }
   
   .countdownDivider {
-    font-size: 1.4rem;
+    font-size: 1.6rem; /* Increased from 1.4rem */
   }
   
   .countdownLabel {
-    font-size: 0.65rem;
-    margin-top: 4px;
+    font-size: 0.7rem; /* Increased from 0.65rem */
+    margin-top: 5px;
   }
   
   .limitedOffer {
-    font-size: 0.8rem;
-    padding: 8px;
+    font-size: 0.85rem; /* Increased from 0.8rem */
+    padding: 10px;
   }
   
   .limitedOfferIcon {
-    font-size: 0.9rem;
+    font-size: 1rem; /* Increased from 0.9rem */
   }
 }
 
 /* Extra small devices */
 @media (max-width: 380px) {
   .countdownContainer {
-    padding: 10px;
+    padding: 12px;
   }
   
   .countdownHeader {
@@ -176,12 +176,12 @@
   }
   
   .countdownNumber {
-    font-size: 1.3rem;
-    min-width: 35px;
-    height: 35px;
+    font-size: 1.5rem; /* Increased from 1.3rem */
+    min-width: 40px; /* Increased from 35px */
+    height: 40px; /* Increased from 35px */
   }
   
   .limitedOffer {
-    font-size: 0.75rem;
+    font-size: 0.8rem; /* Increased from 0.75rem */
   }
 }

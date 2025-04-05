@@ -94,10 +94,13 @@
   transition: all 0.3s ease;
   width: 100%;
   max-width: 280px;
+  background-color: var(--accent);
+  color: var(--light);
 }
 
 .mobileNavCta:hover {
   transform: translateY(-2px);
+  background-color: var(--accent-hover);
 }
 
 /* Mobile optimizations */

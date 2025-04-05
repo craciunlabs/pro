@@ -41,7 +41,7 @@
     padding: 5px;
     top: 34px; /* Ensure it's below sticky banner */
     right: 10px;
-    position: fixed; /* Fix position on mobile */
+    position: absolute; /* Change to absolute instead of fixed */
   }
   
   .mobileMenuBtn {

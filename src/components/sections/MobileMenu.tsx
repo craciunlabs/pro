@@ -11,6 +11,26 @@ interface MobileMenuProps {
 }
 
 const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose, navLinks }) => {
+  // Handle smooth scroll with closing menu
+  const handleSmoothScroll = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    e.preventDefault();
+    
+    // Close the menu
+    onClose();
+    
+    // Extract the ID from href (e.g., "/#about" -> "about")
+    const targetId = href.split('#')[1];
+    
+    if (targetId) {
+      setTimeout(() => {
+        const targetElement = document.getElementById(targetId);
+        if (targetElement) {
+          targetElement.scrollIntoView({ behavior: 'smooth' });
+        }
+      }, 300); // Small delay to allow menu to close first
+    }
+  };
+
   return (
     <div 
       className={`${styles.mobileMenu} ${isOpen ? styles.active : ''}`}
@@ -34,7 +54,7 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose, navLinks }) =>
             <li key={index}>
               <a 
                 href={link.href} 
-                onClick={onClose}
+                onClick={(e) => handleSmoothScroll(e, link.href)}
               >
                 {link.label}
               </a>
@@ -45,7 +65,7 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose, navLinks }) =>
         <a 
           href="#pricing" 
           className={`btn btn-primary ${styles.mobileNavCta}`}
-          onClick={onClose}
+          onClick={(e) => handleSmoothScroll(e, "#pricing")}
         >
           Secure Your Place
         </a>

@@ -8,6 +8,15 @@ const Hero: React.FC = () => {
     // Animation Refs
     const { ref: contentRef, inView: contentInView } = useInView({ triggerOnce: true, threshold: 0.1 });
 
+    // Handle smooth scroll
+    const handleSmoothScroll = (e: React.MouseEvent<HTMLAnchorElement>, targetId: string) => {
+        e.preventDefault();
+        const target = document.getElementById(targetId);
+        if (target) {
+            target.scrollIntoView({ behavior: 'smooth' });
+        }
+    };
+
     return (
         <section className={styles.hero} id="hero">
             <div className={`container ${styles.heroContainer}`}>
@@ -37,10 +46,18 @@ const Hero: React.FC = () => {
                     />
 
                     <div className={styles.heroButtonGroup}>
-                        <a href="#pricing" className={`btn btn-primary ${styles.heroCta}`}>
+                        <a 
+                            href="#pricing" 
+                            className={`btn btn-primary ${styles.heroCta}`}
+                            onClick={(e) => handleSmoothScroll(e, 'pricing')}
+                        >
                             Secure Your Place Now
                         </a>
-                        <a href="#about" className={`btn btn-light ${styles.heroSecondary}`}>
+                        <a 
+                            href="#about" 
+                            className={`btn btn-light ${styles.heroSecondary}`}
+                            onClick={(e) => handleSmoothScroll(e, 'about')}
+                        >
                             Learn More
                         </a>
                     </div>
