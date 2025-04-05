@@ -1,41 +1,29 @@
 /* src/components/sections/MobileMenu.module.css */
-/* Update this file if you haven't already */
-
-.mobileMenuOverlay {
+.mobileMenu {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
-  backdrop-filter: blur(4px);
-  z-index: 1001; /* Needs to be above sticky banner */
-  opacity: 0;
+  background-color: var(--primary-dark);
+  z-index: 1000;
+  transform: translateX(100%);
+  transition: transform 0.3s ease-in-out;
   visibility: hidden;
-  transition: opacity 0.3s ease, visibility 0.3s ease;
+  padding-top: 34px; /* Space for the sticky banner */
 }
 
-.mobileMenuOverlay.isOpen {
-  opacity: 1;
+.active {
+  transform: translateX(0);
   visibility: visible;
 }
 
-.mobileMenuContent {
-  position: fixed;
-  top: 0;
-  right: -100%;
-  width: 85%;
-  max-width: 360px;
-  height: 100vh;
-  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-  padding: 2rem 1.5rem;
+.menuContentWrapper {
+  display: flex;
+  flex-direction: column;
+  height: calc(100% - 34px); /* Adjust for sticky banner */
+  padding: 20px;
   overflow-y: auto;
-  transition: right 0.3s ease;
-  z-index: 1002; /* Above the overlay */
-}
-
-.mobileMenuOverlay.isOpen .mobileMenuContent {
-  right: 0;
 }
 
 .mobileMenuHeader {
@@ -45,69 +33,89 @@
   margin-bottom: 2rem;
 }
 
-.mobileMenuLogo {
+.logo {
+  font-family: 'Outfit', sans-serif;
   font-weight: 700;
-  font-size: 1.3rem;
+  font-size: 1.5rem;
   color: var(--light);
   text-decoration: none;
 }
 
-.closeButton {
+.mobileMenuClose {
   background: none;
   border: none;
   color: var(--light);
   font-size: 1.5rem;
   cursor: pointer;
-  padding: 0.5rem;
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   border-radius: 8px;
   transition: background-color 0.3s ease;
 }
 
-.closeButton:hover {
+.mobileMenuClose:hover {
   background-color: rgba(255, 255, 255, 0.1);
 }
 
-.mobileNavList {
+.mobileMenuLinks {
   list-style: none;
   padding: 0;
-  margin: 0;
+  margin: 0 0 2rem;
 }
 
-.mobileNavItem {
+.mobileMenuLinks li {
   margin-bottom: 1rem;
 }
 
-.mobileNavLink {
+.mobileMenuLinks a {
+  color: var(--light);
+  text-decoration: none;
+  font-size: 1.2rem;
+  font-weight: 500;
   display: block;
-  color: var(--light);
-  font-size: 1rem;
+  padding: 0.5rem 0;
+  transition: opacity 0.3s ease;
+}
+
+.mobileMenuLinks a:hover {
+  opacity: 0.8;
+}
+
+.mobileNavCta {
+  margin-top: auto;
+  align-self: center;
+  padding: 0.75rem 1.5rem;
   font-weight: 600;
-  padding: 0.8rem 0;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  text-decoration: none;
-  transition: color 0.3s ease;
-}
-
-.mobileNavLink:hover {
-  color: var(--accent-secondary);
-}
-
-.mobileCtaButton {
-  margin-top: 2rem;
-  width: 100%;
+  border-radius: 50px;
   text-align: center;
-  padding: 1rem;
-  background-color: var(--accent);
-  color: var(--light);
-  border: none;
-  border-radius: 8px;
-  font-weight: 600;
-  cursor: pointer;
   text-decoration: none;
-  display: inline-block;
-  transition: background-color 0.3s ease;
+  transition: all 0.3s ease;
+  width: 100%;
+  max-width: 280px;
 }
 
-.mobileCtaButton:hover {
-  background-color: var(--accent-hover);
+.mobileNavCta:hover {
+  transform: translateY(-2px);
+}
+
+/* Mobile optimizations */
+@media (max-width: 767px) {
+  .mobileMenuHeader {
+    margin-bottom: 1.5rem;
+  }
+  
+  .logo {
+    font-size: 1.3rem;
+  }
+  
+  .mobileMenuLinks a {
+    font-size: 1.1rem;
+  }
+  
+  .mobileMenuClose {
+    font-size: 1.3rem;
+    padding: 6px;
+  }
 }
