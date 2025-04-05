@@ -12,7 +12,7 @@ const Header: React.FC<HeaderProps> = ({ onMenuToggle }) => {
   return (
     <header className={styles.header}>
       <div className={styles.headerContainer}>
-        {/* Mobile menu button only */}
+        {/* Mobile menu button - hidden on desktop */}
         <button 
           className={styles.mobileMenuBtn} 
           aria-label="Open menu" 

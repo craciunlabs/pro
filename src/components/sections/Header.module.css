@@ -1,7 +1,7 @@
 /* src/components/sections/Header.module.css */
 .header {
   position: absolute;
-  top: 34px; /* Positioned below the sticky banner */
+  top: 34px; /* Positioned below sticky banner */
   right: 0;
   padding: 10px;
   z-index: 100;
@@ -17,7 +17,7 @@
 }
 
 .mobileMenuBtn {
-  display: flex;
+  display: none; /* Hidden by default on desktop */
   align-items: center;
   justify-content: center;
   background: rgba(0, 0, 0, 0.2);
@@ -38,9 +38,12 @@
 @media (max-width: 767px) {
   .header {
     padding: 5px;
+    top: 34px; /* Ensure it's below sticky banner */
+    right: 5px;
   }
   
   .mobileMenuBtn {
+    display: flex; /* Only show on mobile */
     font-size: 1.3rem;
     padding: 6px;
   }

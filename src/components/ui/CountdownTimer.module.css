@@ -1,6 +1,6 @@
 /* src/components/ui/CountdownTimer.module.css */
 .countdownWrapper {
-  margin: 20px 0;
+  margin: 15px 0; /* Reduced from 20px */
   width: 100%;
   max-width: 480px;
   align-self: center;
@@ -9,7 +9,7 @@
 .countdownContainer {
   background: linear-gradient(45deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.15) 100%);
   border-radius: 8px;
-  padding: 10px 12px;
+  padding: 8px 10px; /* Reduced from 10px 12px */
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 
@@ -17,19 +17,19 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 8px;
+  margin-bottom: 6px; /* Reduced from 8px */
   padding: 0 4px;
 }
 
 .countdownTitle {
-  font-size: 0.9rem;
+  font-size: 0.85rem; /* Reduced from 0.9rem */
   font-weight: bold;
   white-space: nowrap;
   font-family: 'Outfit', sans-serif;
 }
 
 .nowOrNext {
-  font-size: 0.75rem;
+  font-size: 0.7rem; /* Reduced from 0.75rem */
   color: var(--accent-secondary);
   font-weight: 600;
   font-family: 'Outfit', sans-serif;
@@ -47,17 +47,17 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin: 0 3px;
+  margin: 0 2px; /* Reduced from 3px */
 }
 
 .countdownNumber {
-  font-size: 1.5rem;
+  font-size: 1.4rem; /* Reduced from 1.5rem */
   font-weight: bold;
   background-color: rgba(0, 0, 0, 0.25);
   border-radius: 6px;
-  padding: 4px;
-  min-width: 40px;
-  height: 40px;
+  padding: 3px; /* Reduced from 4px */
+  min-width: 36px; /* Reduced from 40px */
+  height: 36px; /* Reduced from 40px */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -66,16 +66,16 @@
 }
 
 .countdownLabel {
-  font-size: 0.65rem;
+  font-size: 0.6rem; /* Reduced from 0.65rem */
   text-transform: uppercase;
   letter-spacing: 1px;
-  margin-top: 4px;
+  margin-top: 3px; /* Reduced from 4px */
   opacity: 0.9;
   font-family: 'DM Sans', sans-serif;
 }
 
 .countdownDivider {
-  font-size: 1.5rem;
+  font-size: 1.4rem; /* Reduced from 1.5rem */
   font-weight: bold;
   display: flex;
   align-items: center;
@@ -85,19 +85,19 @@
 .limitedOffer {
   background-color: rgba(242, 201, 76, 0.15);
   border-radius: 8px;
-  padding: 6px 10px;
-  margin-top: 8px;
+  padding: 5px 8px; /* Reduced from 6px 10px */
+  margin-top: 6px; /* Reduced from 8px */
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: 0.8rem;
+  font-size: 0.75rem; /* Reduced from 0.8rem */
   font-family: 'DM Sans', sans-serif;
   justify-content: center;
 }
 
 .limitedOfferIcon {
   color: var(--accent-secondary);
-  font-size: 1rem;
+  font-size: 0.9rem; /* Reduced from 1rem */
 }
 
 .spotsHighlight {
@@ -108,56 +108,56 @@
 /* Mobile responsive styles - matching your existing mobile styling */
 @media (max-width: 767px) {
   .countdownWrapper {
-    margin: 15px 0;
+    margin: 12px 0; /* Reduced from 15px */
     max-width: 100%;
   }
   
   .countdownContainer {
-    padding: 8px;
+    padding: 6px; /* Reduced from 8px */
   }
   
   .countdownHeader {
-    margin-bottom: 6px;
+    margin-bottom: 4px; /* Reduced from 6px */
   }
   
   .countdownTitle {
-    font-size: 0.8rem;
+    font-size: 0.75rem; /* Reduced from 0.8rem */
   }
   
   .nowOrNext {
-    font-size: 0.7rem;
+    font-size: 0.65rem; /* Reduced from 0.7rem */
   }
   
   .countdownNumber {
-    font-size: 1.3rem;
-    min-width: 36px;
-    height: 36px;
-    padding: 3px;
+    font-size: 1.2rem; /* Reduced from 1.3rem */
+    min-width: 32px; /* Reduced from 36px */
+    height: 32px; /* Reduced from 36px */
+    padding: 2px; /* Reduced from 3px */
   }
   
   .countdownDivider {
-    font-size: 1.3rem;
+    font-size: 1.2rem; /* Reduced from 1.3rem */
   }
   
   .countdownLabel {
-    font-size: 0.6rem;
-    margin-top: 3px;
+    font-size: 0.55rem; /* Reduced from 0.6rem */
+    margin-top: 2px; /* Reduced from 3px */
   }
   
   .limitedOffer {
-    font-size: 0.75rem;
-    padding: 5px 8px;
+    font-size: 0.7rem; /* Reduced from 0.75rem */
+    padding: 4px 6px; /* Reduced from 5px 8px */
   }
   
   .limitedOfferIcon {
-    font-size: 0.9rem;
+    font-size: 0.8rem; /* Reduced from 0.9rem */
   }
 }
 
 /* Extra small devices */
 @media (max-width: 380px) {
   .countdownContainer {
-    padding: 6px;
+    padding: 5px; /* Reduced from 6px */
   }
   
   .countdownHeader {
@@ -166,16 +166,16 @@
   }
   
   .countdownTitle {
-    margin-bottom: 2px;
+    margin-bottom: 1px; /* Reduced from 2px */
   }
   
   .countdownNumber {
-    font-size: 1.2rem;
-    min-width: 32px;
-    height: 32px;
+    font-size: 1.1rem; /* Reduced from 1.2rem */
+    min-width: 30px; /* Reduced from 32px */
+    height: 30px; /* Reduced from 32px */
   }
   
   .limitedOffer {
-    font-size: 0.7rem;
+    font-size: 0.65rem; /* Reduced from 0.7rem */
   }
 }
