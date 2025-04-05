@@ -3,93 +3,89 @@ import React, { useState, useEffect } from 'react';
 import styles from './CountdownTimer.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStar } from '@fortawesome/free-solid-svg-icons';
-import { useInView } from 'react-intersection-observer';
 
 interface CountdownTimerProps {
   targetDate: Date;
-  totalStudents?: number;
-  spotsTaken?: number;
-  spotsRemaining?: number;
-  className?: string;
+  totalStudents: number;
+  spotsRemaining: number;
 }
 
 const CountdownTimer: React.FC<CountdownTimerProps> = ({ 
   targetDate, 
-  totalStudents = 14, 
-  spotsTaken, 
-  spotsRemaining = 3,
-  className = ''
+  totalStudents, 
+  spotsRemaining 
 }) => {
-  // Calculate spotsTaken if not provided but spotsRemaining is
-  const calculatedSpotsTaken = spotsTaken || (totalStudents - spotsRemaining);
-  
-  const [timeLeft, setTimeLeft] = useState({
-    days: 0,
-    hours: 0,
-    minutes: 0
-  });
-  
-  const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.1 });
-
-  useEffect(() => {
-    const calculateTimeLeft = () => {
-      const now = new Date().getTime();
-      const distance = targetDate.getTime() - now;
-      
-      if (distance > 0) {
-        setTimeLeft({
-          days: Math.floor(distance / (1000 * 60 * 60 * 24)),
-          hours: Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
-          minutes: Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60))
-        });
-      } else {
-        // Course has started
-        setTimeLeft({ days: 0, hours: 0, minutes: 0 });
-      }
+  const calculateTimeLeft = () => {
+    const difference = +targetDate - +new Date();
+    let timeLeft = {
+      days: 0,
+      hours: 0,
+      minutes: 0,
+      seconds: 0
     };
 
-    calculateTimeLeft();
-    const timer = setInterval(calculateTimeLeft, 60000); // Update every minute
+    if (difference > 0) {
+      timeLeft = {
+        days: Math.floor(difference / (1000 * 60 * 60 * 24)),
+        hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
+        minutes: Math.floor((difference / 1000 / 60) % 60),
+        seconds: Math.floor((difference / 1000) % 60)
+      };
+    }
 
-    return () => clearInterval(timer);
-  }, [targetDate]);
-
-  const formatTime = (time: number) => {
-    return time.toString().padStart(2, '0');
+    return timeLeft;
   };
 
+  const [timeLeft, setTimeLeft] = useState(calculateTimeLeft());
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setTimeLeft(calculateTimeLeft());
+    }, 1000);
+
+    return () => clearTimeout(timer);
+  });
+
+  const padWithZero = (num: number) => {
+    return num.toString().padStart(2, '0');
+  };
+
+  const spotsTaken = totalStudents - spotsRemaining;
+
   return (
-    <div 
-      ref={ref} 
-      className={`${styles.countdownWrapper} ${inView ? 'animate fade-up' : 'animate'} ${className}`}
-    >
+    <div className={styles.countdownWrapper}>
       <div className={styles.countdownContainer}>
         <div className={styles.countdownHeader}>
-          <div className={styles.countdownTitle}>Registration closes in:</div>
-          <div className={styles.nowOrNext}>Join now or wait until next year</div>
+          <span className={styles.countdownTitle}>Registration closes in:</span>
+          <span className={styles.nowOrNext}>Join now or wait until next year</span>
         </div>
         <div className={styles.countdown}>
           <div className={styles.countdownItem}>
-            <div className={styles.countdownNumber}>{formatTime(timeLeft.days)}</div>
-            <div className={styles.countdownLabel}>Days</div>
+            <div className={styles.countdownNumber}>
+              {padWithZero(timeLeft.days)}
+            </div>
+            <span className={styles.countdownLabel}>DAYS</span>
           </div>
-          <div className={styles.countdownDivider}>:</div>
+          <span className={styles.countdownDivider}>:</span>
           <div className={styles.countdownItem}>
-            <div className={styles.countdownNumber}>{formatTime(timeLeft.hours)}</div>
-            <div className={styles.countdownLabel}>Hours</div>
+            <div className={styles.countdownNumber}>
+              {padWithZero(timeLeft.hours)}
+            </div>
+            <span className={styles.countdownLabel}>HOURS</span>
           </div>
-          <div className={styles.countdownDivider}>:</div>
+          <span className={styles.countdownDivider}>:</span>
           <div className={styles.countdownItem}>
-            <div className={styles.countdownNumber}>{formatTime(timeLeft.minutes)}</div>
-            <div className={styles.countdownLabel}>Minutes</div>
+            <div className={styles.countdownNumber}>
+              {padWithZero(timeLeft.minutes)}
+            </div>
+            <span className={styles.countdownLabel}>MINUTES</span>
           </div>
         </div>
       </div>
+      
       <div className={styles.limitedOffer}>
-        <span className={styles.limitedOfferIcon}><FontAwesomeIcon icon={faStar} /></span>
-        <span>
-          Limited to {totalStudents} students - <span className={styles.spotsHighlight}>{calculatedSpotsTaken} spots taken!</span>
-        </span>
+        <FontAwesomeIcon icon={faStar} className={styles.limitedOfferIcon} /> 
+        Limited to {totalStudents} students - <span className={styles.spotsHighlight}>{spotsTaken} spots taken!</span>
       </div>
     </div>
   );

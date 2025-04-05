@@ -5,19 +5,16 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFire } from '@fortawesome/free-solid-svg-icons';
 
 interface StickyBannerProps {
-  message?: string;
-  spotsRemaining?: number;
+  spotsRemaining: number;
 }
 
-const StickyBanner: React.FC<StickyBannerProps> = ({ 
-  message = "ENROLLMENT CLOSING SOON", 
-  spotsRemaining = 3 
-}) => {
+const StickyBanner: React.FC<StickyBannerProps> = ({ spotsRemaining }) => {
   return (
     <a href="#pricing" className={styles.stickyBanner}>
-      <span className={styles.fireEmoji}><FontAwesomeIcon icon={faFire} /></span>
-      <span>{message}: ONLY {spotsRemaining} SPOTS REMAINING</span>
-      <span className={styles.fireEmoji}><FontAwesomeIcon icon={faFire} /></span>
+      <FontAwesomeIcon icon={faFire} className={styles.fireEmoji} />
+      ENROLLMENT CLOSING SOON: ONLY {spotsRemaining} SPOTS 
+      <span className={styles.remainingText}>REMAINING</span>
+      <FontAwesomeIcon icon={faFire} className={styles.fireEmoji} />
     </a>
   );
 };

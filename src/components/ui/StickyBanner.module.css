@@ -32,7 +32,7 @@
   font-size: 1.1rem;
 }
 
-/* Mobile responsive styles - matching your existing mobile view styling */
+/* Mobile responsive styles */
 @media (max-width: 767px) {
   .stickyBanner {
     padding: 6px 8px;
@@ -41,5 +41,9 @@
   
   .fireEmoji {
     font-size: 0.9rem;
+  }
+  
+  .remainingText {
+    display: none; /* Hide "REMAINING" on mobile */
   }
 }
