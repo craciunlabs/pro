@@ -12,11 +12,7 @@ const Header: React.FC<HeaderProps> = ({ onMenuToggle }) => {
   return (
     <header className={styles.header}>
       <div className={styles.headerContainer}>
-        <a href="/" className={styles.logo} aria-label="Mia Ottosson Home">
-          Mia Ottosson
-        </a>
-        
-        {/* Mobile menu button */}
+        {/* Mobile menu button only */}
         <button 
           className={styles.mobileMenuBtn} 
           aria-label="Open menu" 

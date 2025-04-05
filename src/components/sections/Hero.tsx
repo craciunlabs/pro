@@ -38,8 +38,8 @@ const Hero: React.FC = () => {
                     />
 
                     <div className={styles.heroButtonGroup}>
-                        <a href="#pricing" className={`btn btn-primary ${styles.heroCta}`}>
-                            Secure Your Place Now
+                        <a href="#pricing" className={`btn btn-primary ${styles.heroCta} ${styles.animatedCta}`}>
+                            <span>Secure Your Place Now</span>
                         </a>
                         <a href="#about" className={`btn btn-light ${styles.heroSecondary}`}>
                             Learn More

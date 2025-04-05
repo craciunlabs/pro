@@ -74,7 +74,7 @@ function App() {
             {/* Add StickyBanner - only show on landing page, not thank-you */}
             {!isThankYouPage && <StickyBanner spotsRemaining={3} />}
 
-            {/* Conditionally render Header - navLinks prop REMOVED */}
+            {/* Conditionally render Header - only include the menu toggle button */}
             {!isThankYouPage && (
                 <Header onMenuToggle={toggleMobileMenu} />
             )}
