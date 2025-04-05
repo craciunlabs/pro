@@ -16,7 +16,7 @@ const Header: React.FC<HeaderProps> = ({ onMenuToggle }) => {
           Mia Ottosson
         </a>
         
-        {/* Desktop navigation removed, mobile only */}
+        {/* Mobile menu button */}
         <button 
           className={styles.mobileMenuBtn} 
           aria-label="Open menu" 
@@ -25,11 +25,6 @@ const Header: React.FC<HeaderProps> = ({ onMenuToggle }) => {
         >
           <FontAwesomeIcon icon={faBars} aria-hidden="true" />
         </button>
-        
-        {/* Mobile CTA */}
-        <a href="#pricing" className={styles.headerCta}>
-          Enroll Now
-        </a>
       </div>
     </header>
   );
