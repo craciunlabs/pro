@@ -1,11 +1,10 @@
 // src/components/sections/Hero.tsx
-import React from 'react'; // Removed useState, useEffect
+import React from 'react';
 import styles from './Hero.module.css';
 import { useInView } from 'react-intersection-observer';
+import CountdownTimer from '../ui/CountdownTimer';
 
 const Hero: React.FC = () => {
-    // Timer state and effect REMOVED
-
     // Animation Refs
     const { ref: contentRef, inView: contentInView } = useInView({ triggerOnce: true, threshold: 0.1 });
     const { ref: profileRef, inView: profileInView } = useInView({ triggerOnce: true, threshold: 0.1, delay: 100 });
@@ -31,28 +30,39 @@ const Hero: React.FC = () => {
                         "As a medium, you are not allowed to give away your power — you are in charge of the sitting."
                     </p>
 
-                    {/* Countdown Timer JSX block COMPLETELY REMOVED */}
+                    {/* Add the CountdownTimer component */}
+                    <CountdownTimer 
+                        targetDate={new Date("Apr 9, 2025 18:00:00")} 
+                        totalStudents={14} 
+                        spotsRemaining={3} 
+                    />
 
-                    <a href="#about" className={`btn btn-accent btn-large ${styles.heroCta}`}>
-                        Discover Your Medium Path
-                    </a>
+                    <div className="button-group">
+                        <a href="#pricing" className={`btn btn-primary btn-large ${styles.heroCta}`}>
+                            Secure Your Place Now
+                        </a>
+                        <a href="#about" className={`btn btn-secondary ${styles.heroCta}`}>
+                            Learn More About the Program
+                        </a>
+                    </div>
                 </div>
 
-                 {/* Profile Container */}
+                {/* Profile Container */}
                 <div ref={profileRef} className={`${styles.profileContainer} ${profileInView ? 'animate fade-up' : 'animate'}`}>
-                     <div className={styles.profileImageWrapper}>
-                         <div className={styles.profileGlow}></div>
-                         <img src="/images/mia-ottosson.jpeg" alt="Mia Ottosson" className={styles.profileImage} loading="eager" fetchPriority="high" />
-                     </div>
-                     <h2 className={styles.profileName}>Mia Ottosson</h2>
-                     <p className={styles.profileTitle}>
-                         Professional Medium with 30+ years of experience and Tutor at the Arthur Findlay College
-                     </p>
-                     <span className={`${styles.profileSpots} pulse`}>Last 5 Spots</span>
-                     <a href="#pricing" className={styles.profileCta}>
-                         Secure Your Place
-                     </a>
-                 </div>
+                    <div className={styles.profileImageWrapper}>
+                        <div className={styles.profileGlow}></div>
+                        <img src="/images/mia-ottosson.jpeg" alt="Mia Ottosson" className={styles.profileImage} loading="eager" fetchPriority="high" />
+                    </div>
+                    <h2 className={styles.profileName}>Mia Ottosson</h2>
+                    <p className={styles.profileTitle}>
+                        Professional Medium with 30+ years of experience and Tutor at the Arthur Findlay College
+                    </p>
+                    {/* Updated to 3 spots */}
+                    <span className={`${styles.profileSpots} pulse`}>Last 3 Spots</span>
+                    <a href="#pricing" className={styles.profileCta}>
+                        Secure Your Place
+                    </a>
+                </div>
             </div>
         </section>
     );

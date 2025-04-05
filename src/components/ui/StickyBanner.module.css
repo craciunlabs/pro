@@ -1,0 +1,35 @@
+/* src/components/ui/StickyBanner.module.css */
+.stickyBanner {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(90deg, var(--accent) 0%, #ff5e3a 100%);
+    color: var(--light);
+    text-align: center;
+    padding: 12px;
+    font-weight: bold;
+    z-index: 1000;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    font-family: 'Outfit', sans-serif;
+  }
+  
+  .fireEmoji {
+    font-size: 1.2rem;
+  }
+  
+  /* Mobile responsive styles - matching your existing mobile view styling */
+  @media (max-width: 767px) {
+    .stickyBanner {
+      padding: 10px;
+      font-size: 0.9rem;
+    }
+    
+    .fireEmoji {
+      font-size: 1rem;
+    }
+  }

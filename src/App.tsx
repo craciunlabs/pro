@@ -10,6 +10,7 @@ import Header from './components/sections/Header';
 import MobileMenu from './components/sections/MobileMenu';
 import Footer from './components/sections/Footer';
 import MobileBottomBar from './components/sections/MobileBottomBar';
+import StickyBanner from './components/ui/StickyBanner';
 
 // --- Import Page Components ---
 import LandingPage from './pages/LandingPage';
@@ -55,6 +56,9 @@ function App() {
     return (
         <>
             <SkipLink targetId="main-content" />
+
+            {/* Add StickyBanner - only show on landing page, not thank-you */}
+            {!isThankYouPage && <StickyBanner spotsRemaining={3} />}
 
             {/* Conditionally render Header - navLinks prop REMOVED */}
             {!isThankYouPage && (

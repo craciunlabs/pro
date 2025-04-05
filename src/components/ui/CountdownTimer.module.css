@@ -1,0 +1,144 @@
+/* src/components/ui/CountdownTimer.module.css */
+.countdownWrapper {
+    margin: 25px 0;
+  }
+  
+  .countdownContainer {
+    background: linear-gradient(45deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.15) 100%);
+    border-radius: var(--border-radius);
+    padding: 12px 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  }
+  
+  .countdownHeader {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  
+  .countdownTitle {
+    font-size: 1rem;
+    font-weight: bold;
+    white-space: nowrap;
+    margin-right: 15px;
+    font-family: 'Outfit', sans-serif;
+  }
+  
+  .nowOrNext {
+    font-size: 0.85rem;
+    color: var(--accent-secondary);
+    font-weight: 600;
+    margin-left: 15px;
+    font-family: 'Outfit', sans-serif;
+  }
+  
+  .countdown {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 2px;
+  }
+  
+  .countdownItem {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0 3px;
+  }
+  
+  .countdownNumber {
+    font-size: 1.8rem;
+    font-weight: bold;
+    background-color: rgba(0, 0, 0, 0.25);
+    border-radius: 8px;
+    padding: 8px;
+    min-width: 45px;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+    font-family: 'Outfit', sans-serif;
+  }
+  
+  .countdownLabel {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: 5px;
+    opacity: 0.9;
+    font-family: 'DM Sans', sans-serif;
+  }
+  
+  .countdownDivider {
+    font-size: 1.8rem;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    padding-bottom: 8px;
+    margin-top: -5px;
+  }
+  
+  .limitedOffer {
+    background-color: rgba(242, 201, 76, 0.15);
+    border-radius: 8px;
+    padding: 8px 12px;
+    margin-top: 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.9rem;
+    font-family: 'DM Sans', sans-serif;
+  }
+  
+  .limitedOfferIcon {
+    color: var(--accent-secondary);
+    font-size: 1.2rem;
+  }
+  
+  .spotsHighlight {
+    color: var(--accent-secondary);
+    font-weight: bold;
+  }
+  
+  /* Mobile responsive styles - matching your existing mobile styling */
+  @media (max-width: 767px) {
+    .countdownContainer {
+      padding: 10px;
+    }
+    
+    .countdownHeader {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    
+    .countdownTitle {
+      margin-bottom: 4px;
+      margin-right: 0;
+    }
+    
+    .nowOrNext {
+      margin-left: 0;
+      font-size: 0.8rem;
+    }
+    
+    .countdownNumber {
+      font-size: 1.5rem;
+      min-width: 40px;
+      height: 25px;
+      padding: 6px;
+    }
+    
+    .countdownDivider {
+      font-size: 1.5rem;
+    }
+    
+    .countdownLabel {
+      font-size: 0.65rem;
+    }
+    
+    .limitedOffer {
+      font-size: 0.85rem;
+    }
+  }
