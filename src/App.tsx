@@ -72,7 +72,7 @@ function App() {
             <SkipLink targetId="main-content" />
 
             {/* Add StickyBanner - only show on landing page, not thank-you */}
-            {!isThankYouPage && <StickyBanner spotsRemaining={3} />}
+            {!isThankYouPage && <StickyBanner spotsRemaining={2} />}
 
             {/* Conditionally render Header - only include the menu toggle button */}
             {!isThankYouPage && (
