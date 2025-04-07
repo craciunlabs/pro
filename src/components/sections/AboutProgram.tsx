@@ -17,7 +17,7 @@ const AboutProgram: React.FC = () => {
     const statItems = [
         { number: '40+', label: 'Hours of Live Training' },
         { number: '8+', label: 'Months of Development' },
-        { number: '12', label: 'Maximum Participants' },
+        { number: '14', label: 'Maximum Participants' },
         { number: '30+', label: 'Years of Experience' },
     ];
 
@@ -46,7 +46,7 @@ const AboutProgram: React.FC = () => {
                 <div ref={bannerRef} className={`banner ${styles.spotsBanner} ${bannerInView ? 'animate fade-up' : 'animate'}`}>
                      {/* Use global banner-icon class */}
                     <div className="banner-icon"><FontAwesomeIcon icon={faStar} /></div>
-                    <div>Limited to just 12 participants - 10 spots already taken!</div>
+                    <div>Limited to just 14 participants - 12 spots already taken!</div>
                 </div>
 
                 {/* Use global stats-grid class and animation */}
