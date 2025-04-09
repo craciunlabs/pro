@@ -32,8 +32,8 @@ const CTA: React.FC = () => {
             <div className="container">
                 {/* Use module style for content wrapper */}
                 <div ref={contentRef} className={`${styles.ctaContent} ${contentInView ? 'animate fade-up' : 'animate'}`}>
-                     {/* Limited spots badge - UPDATED TO 2 SPOTS */}
-                    <span className={`${styles.limitedSpots} pulse`}>Only 2 spots remaining</span>
+                     {/* Limited spots badge - UPDATED TO 1 SPOT */}
+                    <span className={`${styles.limitedSpots} pulse`}>Only 1 spot remaining</span>
 
                      {/* Heading inherits global h2 style */}
                      {/* Use module style for quote emphasis */}

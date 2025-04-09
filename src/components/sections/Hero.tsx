@@ -42,7 +42,7 @@ const Hero: React.FC = () => {
                     <CountdownTimer 
                         targetDate={new Date("Apr 9, 2025 18:00:00")} 
                         totalStudents={14} 
-                        spotsRemaining={2} 
+                        spotsRemaining={1} 
                     />
 
                     <div className={styles.heroButtonGroup}>

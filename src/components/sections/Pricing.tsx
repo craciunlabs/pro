@@ -54,7 +54,7 @@ const Pricing: React.FC = () => {
 
                 <div ref={bannerRef} className={`banner ${styles.pricingBanner} ${bannerInView ? 'animate fade-up' : 'animate'}`}>
                     <div className="banner-icon"><FontAwesomeIcon icon={faExclamationCircle} /></div>
-                    <div>Only 2 spaces remaining -- 12 spots already taken!</div>
+                    <div>Only 1 space remaining -- 13 spots already taken!</div>
                 </div>
 
                 <div className={styles.pricingGrid}>
