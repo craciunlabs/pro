@@ -32,8 +32,8 @@ const CTA: React.FC = () => {
             <div className="container">
                 {/* Use module style for content wrapper */}
                 <div ref={contentRef} className={`${styles.ctaContent} ${contentInView ? 'animate fade-up' : 'animate'}`}>
-                     {/* Limited spots badge - UPDATED TO 1 SPOT */}
-                    <span className={`${styles.limitedSpots} pulse`}>Only 1 spot remaining</span>
+                     {/* Limited spots badge - UPDATED TO SOLD OUT */}
+                    <span className={`${styles.limitedSpots} pulse`}>Program SOLD OUT for 2025</span>
 
                      {/* Heading inherits global h2 style */}
                      {/* Use module style for quote emphasis */}
@@ -41,18 +41,15 @@ const CTA: React.FC = () => {
 
                     <p className={styles.ctaText}>Your decision to develop your gifts is a gift to both yourself and those you'll serve. This 8+ month journey will transform not just your mediumship skills but your relationship with your own intuitive abilities.</p>
 
-                     {/* Use global button classes with added onClick handler */}
+                     {/* Use global button classes */}
                     <a 
-                        href="https://calendly.com/miaottosson/progressive-mediumship-2025/2025-04-09T18:00:00+02:00?month=2025-04&date=2025-04-09" 
-                        target="_blank" 
-                        rel="noopener noreferrer" 
+                        href="/waiting-list" 
                         className={`btn btn-accent btn-large ${styles.ctaButton}`}
-                        onClick={handleCtaClick} // Add the click handler here
                     >
-                        Secure Your Place Today
+                        Join Waiting List for 2026
                     </a>
 
-                    <p className={styles.ctaNote}>Early registration ends April 8th, 2025</p>
+                    <p className={styles.ctaNote}>Registrations for 2026 opening soon</p>
                 </div>
             </div>
             {/* Background pattern handled by ::before */}

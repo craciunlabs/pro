@@ -36,39 +36,17 @@ const Hero: React.FC = () => {
                     <h2 className={styles.heroSubtitle}>A Transformative 8+ Month Journey</h2>
                     <div className={styles.heroDescription}>
                         <p>Join a select group of dedicated students in this intensive program designed to elevate your mediumship abilities to new heights.</p>
-                        
-                        {/* Stats section with enhanced styling */}
-                        <div className={styles.heroStats}>
-                            <div className={styles.statItem}>
-                                <span className={styles.statNumber}>8+</span>
-                                <span className={styles.statLabel}>Months</span>
-                            </div>
-                            <div className={styles.statItem}>
-                                <span className={styles.statNumber}>40+</span>
-                                <span className={styles.statLabel}>Hours</span>
-                            </div>
-                            <div className={styles.statItem}>
-                                <span className={styles.statNumber}>14</span>
-                                <span className={styles.statLabel}>Students</span>
-                            </div>
-                        </div>
-                        
-                        <div className={styles.heroCTA}>
-                            <a href="/waiting-list" className="btn btn-primary btn-lg">Join Waiting List for 2026</a>
-                            <p className={styles.heroNote}>Program is now SOLD OUT for 2025</p>
-                        </div>
                     </div>
 
                     <div className={styles.heroButtonGroup}>
-                        <a 
-                            href="#pricing" 
+                        <a
+                            href="/waiting-list"
                             className={`btn btn-primary ${styles.heroCta}`}
-                            onClick={(e: React.MouseEvent<HTMLAnchorElement>) => handleSmoothScroll(e, 'pricing')}
                         >
                             Join Waiting List for 2026
                         </a>
-                        <a 
-                            href="#about" 
+                        <a
+                            href="#about"
                             className={`btn btn-light ${styles.heroSecondary}`}
                             onClick={(e: React.MouseEvent<HTMLAnchorElement>) => handleSmoothScroll(e, 'about')}
                         >

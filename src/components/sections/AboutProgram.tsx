@@ -46,7 +46,7 @@ const AboutProgram: React.FC = () => {
                 <div ref={bannerRef} className={`banner ${styles.spotsBanner} ${bannerInView ? 'animate fade-up' : 'animate'}`}>
                      {/* Use global banner-icon class */}
                     <div className="banner-icon"><FontAwesomeIcon icon={faStar} /></div>
-                    <div>Limited to just 14 participants - 13 spots already taken!</div>
+                    <div>Limited to just 14 participants - SOLD OUT for 2025!</div>
                 </div>
 
                 {/* Use global stats-grid class and animation */}
