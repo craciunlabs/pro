@@ -4,44 +4,15 @@ import styles from './Pricing.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faExclamationCircle } from '@fortawesome/free-solid-svg-icons';
 import { useInView } from 'react-intersection-observer';
-import metaEvents from '../../utils/meta-event'; // Import the metaEvents utility
 
 declare global { interface Window { fbq?: (...args: any[]) => void; } }
 
 const Pricing: React.FC = () => {
-    const { ref: sectionRef, inView: sectionInView } = useInView({ triggerOnce: true, threshold: 0.1 });
+    const { ref: sectionRef } = useInView({ triggerOnce: true, threshold: 0.1 });
     const { ref: bannerRef, inView: bannerInView } = useInView({ triggerOnce: true, threshold: 0.1 });
     const { ref: card1Ref, inView: card1InView } = useInView({ triggerOnce: true, threshold: 0.1 });
     const { ref: card2Ref, inView: card2InView } = useInView({ triggerOnce: true, threshold: 0.1, delay: 100 });
     const { ref: noteRef, inView: noteInView } = useInView({ triggerOnce: true, threshold: 0.1, delay: 200 });
-
-    const handleButtonClick = (planType: 'full' | 'deposit') => {
-      const isFullPayment = planType === 'full';
-      const eventData = {
-          content_name: `Progressive Mediumship Course 2025 - ${isFullPayment ? 'Full Payment' : 'Payment Plan'}`,
-          content_ids: [isFullPayment ? 'PMC2025-FULL' : 'PMC2025-PLAN'],
-          content_type: 'product', 
-          currency: 'EUR',
-          value: isFullPayment ? 1295 : 395,
-      };
-      
-      // Client-side Meta Pixel tracking (existing)
-      if (window.fbq) { 
-          window.fbq('track', 'InitiateCheckout', eventData); 
-      }
-      else { 
-          console.warn('Meta Pixel (fbq) not loaded.'); 
-      }
-      
-      // Add server-side Meta CAPI tracking
-      metaEvents.initiateCheckout({
-          value: isFullPayment ? 1295 : 395,
-          currency: 'EUR',
-          content_ids: [isFullPayment ? 'PMC2025-FULL' : 'PMC2025-PLAN'],
-          content_name: `Progressive Mediumship Course 2025 - ${isFullPayment ? 'Full Payment' : 'Payment Plan'}`,
-          content_type: 'product'
-      });
-    };
 
     return (
         <section ref={sectionRef} className={`section ${styles.pricingSection}`} id="pricing">
