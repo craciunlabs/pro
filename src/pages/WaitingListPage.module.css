@@ -1,0 +1,109 @@
+.waitingListContainer {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px 20px;
+  background-color: #f9f9f9;
+}
+
+.waitingListContent {
+  max-width: 600px;
+  width: 100%;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  padding: 40px;
+  text-align: center;
+}
+
+.waitingListContent h1 {
+  font-size: 2.5rem;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.waitingListDescription {
+  font-size: 1.1rem;
+  color: #666;
+  margin-bottom: 30px;
+  line-height: 1.6;
+}
+
+.waitingListForm {
+  text-align: left;
+}
+
+.formGroup {
+  margin-bottom: 20px;
+}
+
+.formGroup label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: #333;
+}
+
+.formGroup input {
+  width: 100%;
+  padding: 12px 15px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 1rem;
+  transition: border-color 0.3s;
+}
+
+.formGroup input:focus {
+  border-color: #4a90e2;
+  outline: none;
+}
+
+.errorMessage {
+  color: #e74c3c;
+  margin-bottom: 20px;
+  font-size: 0.9rem;
+}
+
+.submitButton {
+  width: 100%;
+  padding: 14px;
+  background-color: #4a90e2;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.submitButton:hover {
+  background-color: #3a7bc8;
+}
+
+.submitButton:disabled {
+  background-color: #a0c3e8;
+  cursor: not-allowed;
+}
+
+.privacyNote {
+  margin-top: 20px;
+  font-size: 0.9rem;
+  color: #888;
+  text-align: center;
+}
+
+.successMessage {
+  padding: 30px 0;
+}
+
+.successMessage h2 {
+  color: #2ecc71;
+  margin-bottom: 20px;
+}
+
+.successMessage p {
+  margin-bottom: 10px;
+  color: #555;
+} 

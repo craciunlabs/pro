@@ -57,6 +57,15 @@ const Pricing: React.FC = () => {
                     <div>Program is now SOLD OUT! Join the waiting list for 2026</div>
                 </div>
 
+                <div className={styles.pricingHeader}>
+                    <h2>Investment Options</h2>
+                    <p className={styles.pricingSubtitle}>Choose the payment plan that works best for you</p>
+                    <div className={styles.soldOutBanner}>
+                        <p>Program is now SOLD OUT for 2025</p>
+                        <p>Join our waiting list for 2026 to secure your spot</p>
+                    </div>
+                </div>
+
                 <div className={styles.pricingGrid}>
                     {/* Card 1 */}
                     <div ref={card1Ref} className={`${styles.pricingCard} ${card1InView ? 'animate fade-up' : 'animate'}`}>

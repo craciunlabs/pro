@@ -2,7 +2,6 @@
 import React from 'react';
 import styles from './Hero.module.css';
 import { useInView } from 'react-intersection-observer';
-import CountdownTimer from '../ui/CountdownTimer';
 
 const Hero: React.FC = () => {
     // Animation Refs
@@ -27,8 +26,8 @@ const Hero: React.FC = () => {
                 >
                     {/* Container for top badges */}
                     <div className={styles.topBadgesContainer}>
-                        {/* Alert Kept */}
-                        <p className={styles.startDateAlert}>Starts April 9th, 2025</p>
+                        {/* Alert Updated */}
+                        <p className={styles.startDateAlert}>2026 Dates to be Announced</p>
                         {/* Eyebrow Kept */}
                         <span className={styles.eyebrow}>8+ Month Immersive Program</span>
                     </div>
@@ -37,6 +36,8 @@ const Hero: React.FC = () => {
                     <h2 className={styles.heroSubtitle}>A Transformative 8+ Month Journey</h2>
                     <div className={styles.heroDescription}>
                         <p>Join a select group of dedicated students in this intensive program designed to elevate your mediumship abilities to new heights.</p>
+                        
+                        {/* Stats section with enhanced styling */}
                         <div className={styles.heroStats}>
                             <div className={styles.statItem}>
                                 <span className={styles.statNumber}>8+</span>
@@ -51,18 +52,12 @@ const Hero: React.FC = () => {
                                 <span className={styles.statLabel}>Students</span>
                             </div>
                         </div>
+                        
                         <div className={styles.heroCTA}>
-                            <a href="https://calendly.com/miaottosson/waiting-list-2026" className="btn btn-primary btn-lg">Join Waiting List for 2026</a>
+                            <a href="/waiting-list" className="btn btn-primary btn-lg">Join Waiting List for 2026</a>
                             <p className={styles.heroNote}>Program is now SOLD OUT for 2025</p>
                         </div>
                     </div>
-
-                    {/* Add the CountdownTimer component */}
-                    <CountdownTimer 
-                        targetDate={new Date("Apr 9, 2025 18:00:00")} 
-                        totalStudents={14} 
-                        spotsRemaining={0} 
-                    />
 
                     <div className={styles.heroButtonGroup}>
                         <a 
@@ -70,7 +65,7 @@ const Hero: React.FC = () => {
                             className={`btn btn-primary ${styles.heroCta}`}
                             onClick={(e: React.MouseEvent<HTMLAnchorElement>) => handleSmoothScroll(e, 'pricing')}
                         >
-                            Join Waiting List
+                            Join Waiting List for 2026
                         </a>
                         <a 
                             href="#about" 

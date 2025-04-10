@@ -15,6 +15,7 @@ import StickyBanner from './components/ui/StickyBanner';
 // --- Import Page Components ---
 import LandingPage from './pages/LandingPage';
 import ThankYouPage from './pages/ThankYouPage';
+import WaitingListPage from './pages/WaitingListPage';
 
 // --- Import Meta Events Utility ---
 import metaEvents from './utils/meta-event';
@@ -44,7 +45,7 @@ function App() {
 
     // Effect to add margin to body when sticky banner is shown
     useEffect(() => {
-        if (!location.pathname.includes('thank-you')) {
+        if (!location.pathname.includes('thank-you') && !location.pathname.includes('waiting-list')) {
             // Add padding to body to account for sticky banner
             document.body.style.paddingTop = '34px';
         } else {
@@ -65,22 +66,23 @@ function App() {
     ];
 
     const isThankYouPage = location.pathname === '/thank-you';
+    const isWaitingListPage = location.pathname === '/waiting-list';
 
     // --- Render the application's UI structure ---
     return (
         <>
             <SkipLink targetId="main-content" />
 
-            {/* Add StickyBanner - only show on landing page, not thank-you */}
-            {!isThankYouPage && <StickyBanner />}
+            {/* Add StickyBanner - only show on landing page, not thank-you or waiting-list */}
+            {!isThankYouPage && !isWaitingListPage && <StickyBanner />}
 
             {/* Conditionally render Header - only include the menu toggle button */}
-            {!isThankYouPage && (
+            {!isThankYouPage && !isWaitingListPage && (
                 <Header onMenuToggle={toggleMobileMenu} />
             )}
 
             {/* Conditionally render MobileMenu - navLinks prop KEPT */}
-            {!isThankYouPage && (
+            {!isThankYouPage && !isWaitingListPage && (
                 <MobileMenu
                     isOpen={isMobileMenuOpen}
                     onClose={toggleMobileMenu}
@@ -92,16 +94,17 @@ function App() {
                 <Routes>
                     <Route path="/" element={<LandingPage />} />
                     <Route path="/thank-you" element={<ThankYouPage />} />
+                    <Route path="/waiting-list" element={<WaitingListPage />} />
                 </Routes>
             </main>
 
             {/* Conditionally render Footer - navLinks prop KEPT */}
-            {!isThankYouPage && (
+            {!isThankYouPage && !isWaitingListPage && (
                 <Footer navLinks={navLinks} />
             )}
 
             {/* Conditionally render MobileBottomBar */}
-            {!isThankYouPage && (
+            {!isThankYouPage && !isWaitingListPage && (
                 <MobileBottomBar />
             )}
         </>

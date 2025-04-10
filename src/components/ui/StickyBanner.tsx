@@ -16,8 +16,8 @@ const StickyBanner: React.FC = () => {
   return (
     <a href="#pricing" className={styles.stickyBanner} onClick={handleClick}>
       <FontAwesomeIcon icon={faFire} className={styles.fireEmoji} />
-      SOLD OUT! JOIN THE WAITING LIST FOR NEXT YEAR
-      <span className={styles.remainingText}>REGISTRATIONS CLOSED</span>
+      SOLD OUT for 2025
+      <span className={styles.remainingText}>JOIN WAITING LIST FOR 2026</span>
       <FontAwesomeIcon icon={faFire} className={styles.fireEmoji} />
     </a>
   );
