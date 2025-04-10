@@ -46,12 +46,6 @@ const Pricing: React.FC = () => {
     return (
         <section ref={sectionRef} className={`section ${styles.pricingSection}`} id="pricing">
             <div className="container">
-                <div className={`section-heading ${sectionInView ? 'animate fade-up' : 'animate'}`}>
-                    <span className="section-subtitle">Join the 2025 Program</span>
-                    <h2>Secure Your Place Today</h2>
-                    <p>Choose the payment option that works best for you</p>
-                </div>
-
                 <div className={styles.pricingContainer}>
                     <div ref={bannerRef} className={`banner ${styles.pricingBanner} ${bannerInView ? 'animate fade-up' : 'animate'}`}>
                         <div className="banner-icon"><FontAwesomeIcon icon={faExclamationCircle} /></div>
@@ -71,10 +65,13 @@ const Pricing: React.FC = () => {
                 <div className={styles.pricingGrid}>
                     {/* Card 1 */}
                     <div ref={card1Ref} className={`${styles.pricingCard} ${card1InView ? 'animate fade-up' : 'animate'}`}>
-                        <div className={styles.pricingHeader}>
-                            <div className={styles.pricingTitle}>FULL PAYMENT</div>
-                            <div className={styles.pricingPrice}>€1295</div>
-                            <div className={styles.pricingPeriod}>Save €100</div>
+                        <div className={styles.pricingCardHeader}>
+                          <h3 className={styles.pricingTitle}>FULL PAYMENT</h3>
+                          <div className={styles.priceContainer}>
+                            <span className={styles.currency}>€</span>
+                            <span className={styles.price}>1295</span>
+                          </div>
+                          <p className={styles.pricingDescription}>Save €100</p>
                         </div>
                         <div className={styles.pricingBody}>
                             <ul className={styles.pricingFeatures}>
@@ -86,16 +83,20 @@ const Pricing: React.FC = () => {
                                 <li>Early registration savings of €100</li>
                                 <li>Supportive community access</li>
                             </ul>
-                            <a href="https://calendly.com/miaottosson/waiting-list-2026" target="_blank" rel="noopener noreferrer" className={`btn btn-primary btn-block ${styles.pricingButton}`} onClick={() => handleButtonClick('full')}>Join Waiting List</a>
+                            <a href="/waiting-list" className={`btn btn-primary btn-block ${styles.pricingButton}`}>Join Waiting List</a>
                             <p className={styles.pricingNote}><small>Waiting list for 2026 program now open</small></p>
                         </div>
                     </div>
                     {/* Card 2 */}
                     <div ref={card2Ref} className={`${styles.pricingCard} ${card2InView ? 'animate fade-up' : 'animate'}`}>
-                        <div className={styles.pricingHeader}>
-                            <div className={styles.pricingTitle}>PAYMENT PLAN</div>
-                            <div className={styles.pricingPrice}>€1395</div>
-                            <div className={styles.pricingPeriod}>€395 deposit + 2 x €500</div>
+                        <div className={styles.pricingCardHeader}>
+                          <h3 className={styles.pricingTitle}>PAYMENT PLAN</h3>
+                          <div className={styles.priceContainer}>
+                            <span className={styles.currency}>€</span>
+                            <span className={styles.price}>395</span>
+                            <span className={styles.period}>Deposit</span>
+                          </div>
+                           <p className={styles.pricingDescription}>+ 2 payments of €500</p>
                         </div>
                         <div className={styles.pricingBody}>
                             <ul className={styles.pricingFeatures}>
@@ -107,7 +108,7 @@ const Pricing: React.FC = () => {
                                 <li>€395 deposit due at registration</li>
                                 <li>2 remaining payments of €500 every 3 months</li>
                             </ul>
-                            <a href="https://calendly.com/miaottosson/waiting-list-2026" target="_blank" rel="noopener noreferrer" className={`btn btn-primary btn-block ${styles.pricingButton}`} onClick={() => handleButtonClick('deposit')}>Join Waiting List</a>
+                            <a href="/waiting-list" className={`btn btn-primary btn-block ${styles.pricingButton}`}>Join Waiting List</a>
                             <p className={styles.pricingNote}><small>Waiting list for 2026 program now open</small></p>
                         </div>
                     </div>

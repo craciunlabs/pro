@@ -11,8 +11,18 @@
   margin-bottom: 40px;
 }
 
-.pricingBanner { background-color: rgba(255, 107, 107, 0.15) !important; max-width: 600px; margin: 30px auto !important; border-left-color: var(--accent); }
-.pricingBanner .banner-icon { color: var(--accent); }
+.pricingBanner {
+  background-color: rgba(255, 107, 107, 0.15) !important;
+  max-width: 600px;
+  margin: 30px auto !important;
+  border-left-color: var(--accent);
+  color: var(--accent-dark, #a83333); /* Set text color for readability */
+}
+
+.pricingBanner .banner-icon {
+  color: var(--accent);
+}
+
 .pricingGrid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 40px; margin-top: 60px; }
 .pricingCard { background-color: var(--light); border-radius: var(--border-radius); box-shadow: var(--box-shadow); overflow: hidden; transition: var(--transition); display: flex; flex-direction: column; }
 .pricingCard:hover { transform: translateY(-10px); box-shadow: 0 20px 40px rgba(0,0,0,0.1); }
@@ -24,12 +34,13 @@
 .pricingHeader h2 {
   font-size: 2.5rem;
   margin-bottom: 15px;
+  color: white; /* Explicitly set h2 color */
 }
 .pricingSubtitle {
   font-size: 1.1rem;
   max-width: 700px;
   margin: 0 auto 20px auto;
-  color: rgba(255, 255, 255, 0.9); /* Slightly softer white for subtitle */
+  color: rgba(255, 255, 255, 0.9); /* Ensure subtitle is soft white */
 }
 .pricingTitle { font-family: 'Outfit', sans-serif; font-size: 1.5rem; margin-bottom: 16px; color: var(--light); font-weight: 700; line-height: 1.3; }
 .pricingPrice { font-family: 'Outfit', sans-serif; font-size: 3rem; font-weight: 800; margin-bottom: 8px; color: var(--light); line-height: 1; }
@@ -103,4 +114,5 @@
 
 .soldOutBanner p {
   margin: 0;
+  color: white; /* Explicitly set banner paragraph color */
 }
