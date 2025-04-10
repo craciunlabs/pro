@@ -35,7 +35,8 @@ const Hero: React.FC = () => {
                     <h1 className={styles.heroTitle}>Progressive Mediumship</h1>
                     <h2 className={styles.heroSubtitle}>A Transformative 8+ Month Journey</h2>
                     <div className={styles.heroDescription}>
-                        <p>Join a select group of dedicated students in this intensive program designed to elevate your mediumship abilities to new heights.</p>
+                        <p>Join a select group of dedicated students in this intensive program designed to elevate and nurture your own authentic mediumship.</p>
+                        <p className={styles.heroSubNote}>*free of fluff or molding</p>
                     </div>
 
                     <div className={styles.heroButtonGroup}>

@@ -203,3 +203,17 @@
     font-size: 1.4rem;
   }
 }
+
+.heroDescription p:last-of-type {
+    margin-bottom: 30px; /* Add space below main description */
+}
+
+.heroSubNote {
+    font-style: italic;
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.8);
+    margin-top: -20px; /* Pull it closer to the main description */
+    margin-bottom: 30px; /* Add space below sub-note */
+}
+
+/* Make stats stand out */
