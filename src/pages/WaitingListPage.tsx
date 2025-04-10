@@ -1,37 +1,59 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from './WaitingListPage.module.css';
+import { addToWaitingList, checkEmailExists } from '../utils/supabase';
 
 const WaitingListPage: React.FC = () => {
     const [firstName, setFirstName] = useState('');
     const [email, setEmail] = useState('');
+    const [submitted, setSubmitted] = useState(false);
+    const [error, setError] = useState<string | null>(null);
     const [isSubmitting, setIsSubmitting] = useState(false);
-    const [error, setError] = useState('');
-    const [success, setSuccess] = useState(false);
     const navigate = useNavigate();
 
-    const handleSubmit = async (e: React.FormEvent) => {
+    // useEffect to handle redirect after submission
+    useEffect(() => {
+        let timer: NodeJS.Timeout;
+        if (submitted) {
+            timer = setTimeout(() => {
+                navigate('/');
+            }, 10000); // Change 15000 to 10000 (10 seconds delay)
+        }
+        // Cleanup function to clear the timeout if the component unmounts
+        // or if submitted becomes false before the timeout finishes
+        return () => clearTimeout(timer);
+    }, [submitted, navigate]); // Dependencies for the effect
+
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setIsSubmitting(true);
         setError('');
 
         try {
-            // Here you would typically send the data to your backend
-            // For now, we'll just simulate a successful submission
-            await new Promise(resolve => setTimeout(resolve, 1000));
+            // Check if email already exists in waiting list
+            const { exists: emailExists } = await checkEmailExists(email);
             
-            // Store the data in localStorage for now
-            const waitingList = JSON.parse(localStorage.getItem('waitingList') || '[]');
-            waitingList.push({ firstName, email, date: new Date().toISOString() });
-            localStorage.setItem('waitingList', JSON.stringify(waitingList));
+            if (emailExists) {
+                setError('This email is already on our waiting list.');
+                setIsSubmitting(false);
+                return;
+            }
             
-            setSuccess(true);
-            
-            // Redirect to thank you page after 3 seconds
-            setTimeout(() => {
-                navigate('/thank-you');
-            }, 3000);
+            // Email does not exist, add to waiting list
+            const { error: insertError } = await addToWaitingList({
+                first_name: firstName,
+                email: email,
+            });
+
+            if (insertError) {
+                console.error("Error adding to waiting list:", insertError);
+                setError("There was an error submitting your information. Please try again.");
+            } else {
+                setSubmitted(true);
+                setError(null); // Clear any previous errors
+            }
         } catch (err) {
+            console.error('Submission error:', err);
             setError('There was an error submitting your information. Please try again.');
         } finally {
             setIsSubmitting(false);
@@ -47,12 +69,11 @@ const WaitingListPage: React.FC = () => {
                     Join our waiting list to be the first to know when registration opens for 2026.
                 </p>
                 
-                {success ? (
+                {submitted ? (
                     <div className={styles.successMessage}>
                         <h2>Thank You!</h2>
                         <p>You've been added to our waiting list for 2026.</p>
                         <p>We'll contact you as soon as registration opens.</p>
-                        <p>Redirecting to confirmation page...</p>
                     </div>
                 ) : (
                     <form className={styles.waitingListForm} onSubmit={handleSubmit}>

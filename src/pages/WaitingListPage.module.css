@@ -106,4 +106,15 @@
 .successMessage p {
   margin-bottom: 10px;
   color: #555;
+}
+
+/* Add Media Query for smaller screens */
+@media (max-width: 600px) {
+  .waitingListContent {
+    padding: 30px 20px; /* Reduce horizontal padding */
+  }
+
+  .successMessage h2 {
+     font-size: 1.8rem; /* Adjust heading size for mobile */
+  }
 } 
