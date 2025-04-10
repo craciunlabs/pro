@@ -20,8 +20,8 @@ const StickyBanner: React.FC<StickyBannerProps> = ({ spotsRemaining }) => {
   return (
     <a href="#pricing" className={styles.stickyBanner} onClick={handleClick}>
       <FontAwesomeIcon icon={faFire} className={styles.fireEmoji} />
-      ENROLLMENT CLOSING SOON: ONLY {spotsRemaining} {spotsRemaining === 1 ? 'SPOT' : 'SPOTS'} 
-      <span className={styles.remainingText}>REMAINING</span>
+      SOLD OUT! JOIN THE WAITING LIST FOR NEXT YEAR
+      <span className={styles.remainingText}>REGISTRATIONS CLOSED</span>
       <FontAwesomeIcon icon={faFire} className={styles.fireEmoji} />
     </a>
   );

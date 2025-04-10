@@ -54,7 +54,7 @@ const Pricing: React.FC = () => {
 
                 <div ref={bannerRef} className={`banner ${styles.pricingBanner} ${bannerInView ? 'animate fade-up' : 'animate'}`}>
                     <div className="banner-icon"><FontAwesomeIcon icon={faExclamationCircle} /></div>
-                    <div>Only 1 space remaining -- 13 spots already taken!</div>
+                    <div>Program is now SOLD OUT! Join the waiting list for 2026</div>
                 </div>
 
                 <div className={styles.pricingGrid}>
@@ -75,12 +75,12 @@ const Pricing: React.FC = () => {
                                 <li>Early registration savings of €100</li>
                                 <li>Supportive community access</li>
                             </ul>
-                            <a href="https://calendly.com/miaottosson/progressive-mediumship-2025/2025-04-09T18:00:00+02:00?month=2025-04&date=2025-04-09" target="_blank" rel="noopener noreferrer" className={`btn btn-primary btn-block ${styles.pricingButton}`} onClick={() => handleButtonClick('full')}>Pay in Full</a>
-                            <p className={styles.pricingNote}><small>Early registration ends April 8th, 2025</small></p>
+                            <a href="https://calendly.com/miaottosson/waiting-list-2026" target="_blank" rel="noopener noreferrer" className={`btn btn-primary btn-block ${styles.pricingButton}`} onClick={() => handleButtonClick('full')}>Join Waiting List</a>
+                            <p className={styles.pricingNote}><small>Waiting list for 2026 program now open</small></p>
                         </div>
                     </div>
                     {/* Card 2 */}
-                    <div ref={card2Ref} className={`${styles.pricingCard} ${card2InView ? `animate fade-up` : 'animate'}`}>
+                    <div ref={card2Ref} className={`${styles.pricingCard} ${card2InView ? 'animate fade-up' : 'animate'}`}>
                         <div className={styles.pricingHeader}>
                             <div className={styles.pricingTitle}>PAYMENT PLAN</div>
                             <div className={styles.pricingPrice}>€1395</div>
@@ -96,14 +96,14 @@ const Pricing: React.FC = () => {
                                 <li>€395 deposit due at registration</li>
                                 <li>2 remaining payments of €500 every 3 months</li>
                             </ul>
-                             <a href="https://calendly.com/miaottosson/progressive-mediumship-2025-deposit/2025-04-08T18:00:00+02:00?month=2025-04&date=2025-04-08" target="_blank" rel="noopener noreferrer" className={`btn btn-primary btn-block ${styles.pricingButton}`} onClick={() => handleButtonClick('deposit')}>Choose Payment Plan</a>
-                            <p className={styles.pricingNote}><small>Please note: No BONUS private sessions for this option</small></p>
+                            <a href="https://calendly.com/miaottosson/waiting-list-2026" target="_blank" rel="noopener noreferrer" className={`btn btn-primary btn-block ${styles.pricingButton}`} onClick={() => handleButtonClick('deposit')}>Join Waiting List</a>
+                            <p className={styles.pricingNote}><small>Waiting list for 2026 program now open</small></p>
                         </div>
                     </div>
                 </div>
 
                 {/* Note Container */}
-                <div ref={noteRef} className={`${styles.refundNoteContainer} ${noteInView ? `animate fade-up` : 'animate'}`}>
+                <div ref={noteRef} className={`${styles.refundNoteContainer} ${noteInView ? 'animate fade-up' : 'animate'}`}>
                     <p className={styles.refundNoteText}>Please note: Due to the intensive nature of this personalized program and limited spots available, we are unable to offer refunds. By joining, you are committing to your complete development journey.</p>
                     <p className={styles.bonusSessionNote}>*The bonus 1.5-hour private session included with the Full Payment option is dedicated time for discussing your personal mediumship development journey with Mia, not for private reading appointments.</p>
                 </div>

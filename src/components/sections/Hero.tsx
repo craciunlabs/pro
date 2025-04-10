@@ -33,30 +33,49 @@ const Hero: React.FC = () => {
                         <span className={styles.eyebrow}>8+ Month Immersive Program</span>
                     </div>
 
-                    <h1>2025 Progressive Mediumship Course</h1>
-                    <p className={styles.heroSubtitle}>
-                        "As a medium, you are not allowed to give away your power — you are in charge of the sitting."
-                    </p>
+                    <h1 className={styles.heroTitle}>Progressive Mediumship</h1>
+                    <h2 className={styles.heroSubtitle}>A Transformative 8+ Month Journey</h2>
+                    <div className={styles.heroDescription}>
+                        <p>Join a select group of dedicated students in this intensive program designed to elevate your mediumship abilities to new heights.</p>
+                        <div className={styles.heroStats}>
+                            <div className={styles.statItem}>
+                                <span className={styles.statNumber}>8+</span>
+                                <span className={styles.statLabel}>Months</span>
+                            </div>
+                            <div className={styles.statItem}>
+                                <span className={styles.statNumber}>40+</span>
+                                <span className={styles.statLabel}>Hours</span>
+                            </div>
+                            <div className={styles.statItem}>
+                                <span className={styles.statNumber}>14</span>
+                                <span className={styles.statLabel}>Students</span>
+                            </div>
+                        </div>
+                        <div className={styles.heroCTA}>
+                            <a href="https://calendly.com/miaottosson/waiting-list-2026" className="btn btn-primary btn-lg">Join Waiting List for 2026</a>
+                            <p className={styles.heroNote}>Program is now SOLD OUT for 2025</p>
+                        </div>
+                    </div>
 
                     {/* Add the CountdownTimer component */}
                     <CountdownTimer 
                         targetDate={new Date("Apr 9, 2025 18:00:00")} 
                         totalStudents={14} 
-                        spotsRemaining={1} 
+                        spotsRemaining={0} 
                     />
 
                     <div className={styles.heroButtonGroup}>
                         <a 
                             href="#pricing" 
                             className={`btn btn-primary ${styles.heroCta}`}
-                            onClick={(e) => handleSmoothScroll(e, 'pricing')}
+                            onClick={(e: React.MouseEvent<HTMLAnchorElement>) => handleSmoothScroll(e, 'pricing')}
                         >
-                            Secure Your Place Now
+                            Join Waiting List
                         </a>
                         <a 
                             href="#about" 
                             className={`btn btn-light ${styles.heroSecondary}`}
-                            onClick={(e) => handleSmoothScroll(e, 'about')}
+                            onClick={(e: React.MouseEvent<HTMLAnchorElement>) => handleSmoothScroll(e, 'about')}
                         >
                             Learn More
                         </a>
