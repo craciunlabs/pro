@@ -3,7 +3,7 @@ import styles from './Features.module.css';
 import { useInView } from 'react-intersection-observer';
 
 const Features: React.FC = () => {
-    const { ref: sectionRef, inView: sectionInView } = useInView({ triggerOnce: true, threshold: 0.1 });
+    const { ref: sectionRef } = useInView({ triggerOnce: true, threshold: 0.1 });
 
     return (
         <section ref={sectionRef} className={`section ${styles.featuresSection}`} id="features">

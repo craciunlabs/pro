@@ -4,11 +4,7 @@ import styles from './StickyBanner.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFire } from '@fortawesome/free-solid-svg-icons';
 
-interface StickyBannerProps {
-  spotsRemaining: number;
-}
-
-const StickyBanner: React.FC<StickyBannerProps> = ({ spotsRemaining }) => {
+const StickyBanner: React.FC = () => {
   const handleClick = (e: React.MouseEvent) => {
     e.preventDefault();
     const pricingSection = document.getElementById('pricing');
