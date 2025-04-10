@@ -2,28 +2,9 @@
 import React from 'react';
 import styles from './CTA.module.css';
 import { useInView } from 'react-intersection-observer';
-import metaEvents from '../../utils/meta-event'; // Import the metaEvents utility
-import { CustomData } from '../../utils/meta-event-types'; // Add this import
 
 const CTA: React.FC = () => {
     const { ref: contentRef, inView: contentInView } = useInView({ triggerOnce: true, threshold: 0.1 });
-
-    // Update this function to use CustomData type
-    const handleCtaClick = () => {
-        // Track InitiateCheckout event through Meta CAPI
-        const customData: CustomData = {
-            value: 1295, // The price of your course
-            currency: 'EUR',
-            content_ids: ['progressive-mediumship-course'],
-            content_name: 'Progressive Mediumship Course',
-            content_category: 'Course Registration'
-        };
-        
-        metaEvents.initiateCheckout(customData);
-        
-        // The actual navigation happens through the href attribute,
-        // so no need to add navigation code here
-    };
 
     return (
         // The rest of your component remains unchanged
