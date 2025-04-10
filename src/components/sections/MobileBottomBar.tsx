@@ -15,15 +15,13 @@ const MobileBottomBar: React.FC = () => {
     return (
         <div className={styles.mobileBottomBar}>
              {/* Use global button classes */}
-             {/* Link to the full payment option as primary mobile CTA */}
+             {/* Link to waiting list page as primary mobile CTA */}
             <a
-                href="https://calendly.com/miaottosson/progressive-mediumship-2025/2025-04-09T18:00:00+02:00?month=2025-04&date=2025-04-09"
-                target="_blank"
-                rel="noopener noreferrer"
+                href="/waiting-list"
                 className={`btn btn-primary btn-block ${styles.mobileCtaButton}`}
                 onClick={handleClick} // Add optional tracking
             >
-                Secure Your Place Now
+                Join Waiting List
             </a>
         </div>
     );
