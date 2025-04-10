@@ -17,20 +17,14 @@ const Pricing: React.FC = () => {
     return (
         <section ref={sectionRef} className={`section ${styles.pricingSection}`} id="pricing">
             <div className="container">
-                <div className={styles.pricingContainer}>
-                    <div ref={bannerRef} className={`banner ${styles.pricingBanner} ${bannerInView ? 'animate fade-up' : 'animate'}`}>
-                        <div className="banner-icon"><FontAwesomeIcon icon={faExclamationCircle} /></div>
-                        <div>Program is now SOLD OUT! Join the waiting list for 2026</div>
-                    </div>
+                <div ref={bannerRef} className={`banner ${styles.pricingBanner} ${bannerInView ? 'animate fade-up' : 'animate'}`}>
+                    <div className="banner-icon"><FontAwesomeIcon icon={faExclamationCircle} /></div>
+                    <div>Program is now SOLD OUT! Join the waiting list for 2026</div>
+                </div>
 
-                    <div className={styles.pricingHeader}>
-                        <h2>Investment Options</h2>
-                        <p className={styles.pricingSubtitle}>The 2025 program is sold out. Join the waiting list for 2026.</p>
-                        <div className={styles.soldOutBanner}>
-                            <p>Program is now SOLD OUT for 2025</p>
-                            <p>Join our waiting list for 2026 to secure your spot</p>
-                        </div>
-                    </div>
+                <div className="section-heading" style={{ marginBottom: '40px' }}> 
+                    <h2>Investment Options</h2>
+                    <p>The 2025 program is sold out. Join the waiting list for 2026.</p>
                 </div>
 
                 <div className={styles.pricingGrid}>
